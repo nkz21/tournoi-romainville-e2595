@@ -745,131 +745,127 @@
     </div>
   </div>
 
-  <script>
-  /* ══════════════════════════════════════════════════════════════
-     CONFIG SUPABASE
-  ══════════════════════════════════════════════════════════════ */
-  const SB_URL = 'https://afqmjyxgkwipiagejxsw.supabase.co';
-  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmcW1qeXhna3dpcGlhZ2VqeHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MjE5MzcsImV4cCI6MjA5NTA5NzkzN30.FNQ1P1DnSANFOE7oW9AkvhNrZq1N6unWZV8Phn3z9vg';
-  const ADMIN_PWD = 'tournoi2026';
+ <script>
+const SB_URL = 'https://afqmjyxgkwipiagejxsw.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmcW1qeXhna3dpcGlhZ2VqeHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MjE5MzcsImV4cCI6MjA5NTA5NzkzN30.FNQ1P1DnSANFOE7oW9AkvhNrZq1N6unWZV8Phn3z9vg';
+const ADMIN_PWD = 'tournoi2026';
 
-  async function sbGet(path) {
-    const r = await fetch(SB_URL + path, {
-      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
-    });
-    if (!r.ok) throw new Error(await r.text());
-    return r.json();
+async function sbGet(path) {
+  const r = await fetch(SB_URL + path, {
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+/* ── LOGOS ── */
+const LOGOS = {
+  'arsenal':    'https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg',
+  'barca':      'https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg',
+  'barcelone':  'https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg',
+  'psg':        'https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg',
+  'real':       'https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg',
+  'real madrid':'https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg',
+  'city':       'https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg',
+  'man city':   'https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg',
+  'bayern':     'https://upload.wikimedia.org/wikipedia/commons/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg',
+};
+function getLogo(name) {
+  return LOGOS[(name||'').toLowerCase()] || '';
+}
+
+/* ══════════════════════════════════════════════
+   CHARGEMENT PRINCIPAL
+══════════════════════════════════════════════ */
+let teamsById = {};   // id -> { name, slug, group_id }
+let groupsById = {};  // id -> { name }
+let allMatches = [];
+
+async function loadAll() {
+  try {
+    // 1. Groupes
+    const groups = await sbGet('/rest/v1/groups?select=id,name');
+    groups.forEach(g => groupsById[g.id] = g);
+
+    // 2. Équipes
+    const teams = await sbGet('/rest/v1/teams?select=id,name,slug,group_id');
+    teams.forEach(t => teamsById[t.id] = t);
+
+    // 3. Matchs (avec équipes jointes)
+    const matches = await sbGet(
+      '/rest/v1/matches?select=id,leg,home_score,away_score,status,kickoff_at,group_id,' +
+      'home_team:teams!matches_home_team_id_fkey(id,name,slug),' +
+      'away_team:teams!matches_away_team_id_fkey(id,name,slug)' +
+      '&order=kickoff_at'
+    );
+    allMatches = matches;
+
+    renderMatches();
+    await loadStandings();
+    await loadScorers();
+
+  } catch(e) {
+    console.error('Erreur Supabase:', e);
   }
+}
 
-  /* ══════════════════════════════════════════════════════════════
-     DONNÉES STATIQUES (logos, mapping noms)
-  ══════════════════════════════════════════════════════════════ */
-  const TEAM_META = {
-    'Arsenal':    { img: 'https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg',           pool: 'A' },
-    'Barça':      { img: 'https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg', pool: 'A' },
-    'Barcelone':  { img: 'https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg', pool: 'A' },
-    'PSG':        { img: 'https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg', pool: 'A' },
-    'Real':       { img: 'https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg',        pool: 'B' },
-    'Real Madrid':{ img: 'https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg',        pool: 'B' },
-    'City':       { img: 'https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg', pool: 'B' },
-    'Man City':   { img: 'https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg', pool: 'B' },
-    'Bayern':     { img: 'https://upload.wikimedia.org/wikipedia/commons/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg', pool: 'B' },
-  };
-
-  function teamImg(name) {
-    return (TEAM_META[name] || {}).img || '';
-  }
-  function teamPool(name) {
-    return (TEAM_META[name] || {}).pool || 'A';
-  }
-
-  // Normalise les noms venant de la BDD vers les noms affichés
-  const NAME_MAP = { 'Barcelona': 'Barça', 'Barcelone': 'Barça', 'Real Madrid': 'Real', 'Man City': 'City' };
-  function normName(n) { return NAME_MAP[n] || n; }
-
-  /* ══════════════════════════════════════════════════════════════
-     CALCUL CLASSEMENT
-  ══════════════════════════════════════════════════════════════ */
-  let allMatches = []; // données BDD brutes
-
-  function computeStandings() {
-    const st = {};
-    allMatches.forEach(m => {
-      [m.home, m.away].forEach(t => {
-        if (!st[t]) st[t] = { pj:0, v:0, n:0, d:0, bp:0, bc:0, pts:0 };
-      });
-      const hs = m.home_score, as = m.away_score;
-      if (hs == null || as == null) return;
-      const h = parseInt(hs), a = parseInt(as);
-      st[m.home].pj++; st[m.away].pj++;
-      st[m.home].bp += h; st[m.home].bc += a;
-      st[m.away].bp += a; st[m.away].bc += h;
-      if (h > a) { st[m.home].v++; st[m.home].pts += 3; st[m.away].d++; }
-      else if (h < a) { st[m.away].v++; st[m.away].pts += 3; st[m.home].d++; }
-      else { st[m.home].n++; st[m.away].n++; st[m.home].pts++; st[m.away].pts++; }
-    });
-    return st;
-  }
-
-  function sortPool(teams, st) {
-    return [...teams].sort((a, b) => {
-      if ((st[b]?.pts||0) !== (st[a]?.pts||0)) return (st[b]?.pts||0) - (st[a]?.pts||0);
-      const dB = (st[b]?.bp||0)-(st[b]?.bc||0), dA = (st[a]?.bp||0)-(st[a]?.bc||0);
-      if (dB !== dA) return dB - dA;
-      return (st[b]?.bp||0) - (st[a]?.bp||0);
-    });
-  }
-
-  /* ══════════════════════════════════════════════════════════════
-     RENDU MATCHS
-  ══════════════════════════════════════════════════════════════ */
-  function renderMatches(pool) {
-    const container = document.getElementById('matches-pool-' + pool);
+/* ══════════════════════════════════════════════
+   MATCHS
+══════════════════════════════════════════════ */
+function renderMatches() {
+  ['A','B'].forEach(poolName => {
+    const container = document.getElementById('matches-pool-' + poolName);
     if (!container) return;
 
-    // Grouper aller + retour par confrontation (même paire de noms)
-    const poolMatches = allMatches.filter(m => {
-      const poolTag = pool === 'A' ? 'Poule A' : 'Poule B';
-      return m.pool === pool || m.pool === poolTag;
-    });
+    // Trouver le group_id correspondant à "Poule A" ou "Poule B"
+    const groupId = Object.values(groupsById).find(g =>
+      g.name.toLowerCase().includes(poolName.toLowerCase()) ||
+      g.name === 'Poule ' + poolName
+    )?.id;
 
+    const poolMatches = groupId
+      ? allMatches.filter(m => m.group_id === groupId)
+      : allMatches.filter((_, i) => poolName === 'A' ? i < 6 : i >= 6);
+
+    // Grouper aller + retour par confrontation
     const pairs = {};
     poolMatches.forEach(m => {
-      const key = [m.home, m.away].sort().join('|');
+      const key = [m.home_team?.id, m.away_team?.id].sort().join('|');
       if (!pairs[key]) pairs[key] = [];
       pairs[key].push(m);
     });
 
     container.innerHTML = '';
     Object.values(pairs).forEach(group => {
-      // Trier aller avant retour
-      group.sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
+      group.sort((a, b) => (a.leg || 1) - (b.leg || 1));
+
+      const t1 = group[0].home_team?.name || '?';
+      const t2 = group[0].away_team?.name || '?';
+      const names = [t1, t2].sort();
 
       const card = document.createElement('div');
       card.className = 'match-card';
-
-      const [t1, t2] = [normName(group[0].home), normName(group[0].away)].sort();
       card.innerHTML = `
         <div class="match-vs-header">
           <div class="match-teams">
-            <img src="${teamImg(t1)}" alt="${t1}" width="32" height="32" loading="lazy">
-            ${t1}
+            ${getLogo(names[0]) ? `<img src="${getLogo(names[0])}" alt="${names[0]}" width="32" height="32" loading="lazy">` : ''}
+            ${names[0]}
             <span class="vs-sep">vs</span>
-            ${t2}
-            <img src="${teamImg(t2)}" alt="${t2}" width="32" height="32" loading="lazy">
+            ${names[1]}
+            ${getLogo(names[1]) ? `<img src="${getLogo(names[1])}" alt="${names[1]}" width="32" height="32" loading="lazy">` : ''}
           </div>
         </div>
         <div class="match-legs">
           ${group.map(m => {
             const hs = m.home_score, as = m.away_score;
             const hasScore = hs != null && as != null;
-            const status = m.status === 'finished' ? 'Terminé' : m.status === 'live' ? '🔴 Live' : 'À jouer';
             const scoreStr = hasScore ? `${hs} – ${as}` : '-';
-            const leg = m.leg || (m.order_index % 2 === 0 ? 'Retour' : 'Aller');
+            const status = m.status === 'finished' ? 'Terminé' : m.status === 'live' ? '🔴 Live' : 'À jouer';
+            const legLabel = m.leg === 2 ? 'Retour' : 'Aller';
             return `
               <div class="leg-row">
-                <span class="leg-label">${leg}</span>
-                <span class="leg-teams">${normName(m.home)} — ${normName(m.away)}</span>
+                <span class="leg-label">${legLabel}</span>
+                <span class="leg-teams">${m.home_team?.name || '?'} — ${m.away_team?.name || '?'}</span>
                 <span class="leg-score">${scoreStr}</span>
                 <span class="leg-status">${status}</span>
               </div>`;
@@ -877,272 +873,257 @@
         </div>`;
       container.appendChild(card);
     });
-  }
+  });
+}
 
-  /* ══════════════════════════════════════════════════════════════
-     RENDU CLASSEMENT
-  ══════════════════════════════════════════════════════════════ */
-  const POOL_TEAMS = {
-    A: ['Arsenal', 'Barça', 'PSG'],
-    B: ['Real', 'City', 'Bayern']
-  };
+/* ══════════════════════════════════════════════
+   CLASSEMENT (depuis table standings)
+══════════════════════════════════════════════ */
+async function loadStandings() {
+  try {
+    const rows = await sbGet(
+      '/rest/v1/standings?select=played,won,drawn,lost,goals_for,goals_against,goal_diff,points,' +
+      'team:teams(id,name,slug),group:groups(id,name)' +
+      '&order=points.desc,goal_diff.desc,goals_for.desc'
+    );
 
-  function renderStanding(pool, st, sorted) {
-    const tbody = document.getElementById('standing-' + pool);
-    if (!tbody) return;
-    tbody.innerHTML = sorted.map((name, i) => {
-      const s = st[name] || { pj:0, v:0, n:0, d:0, bp:0, bc:0, pts:0 };
-      const diff = s.bp - s.bc;
-      return `<tr>
-        <td><span class="pill">${i+1}</span></td>
-        <td><div class="table-team">
-          <img class="club-logo" src="${teamImg(name)}" alt="${name}" width="32" height="32" loading="lazy">
-          <strong>${name}</strong>
-        </div></td>
-        <td>${s.pj}</td><td>${s.v}</td><td>${s.n}</td><td>${s.d}</td>
-        <td>${s.bp}</td><td>${s.bc}</td>
-        <td>${diff > 0 ? '+'+diff : diff}</td>
-        <td><strong>${s.pts}</strong></td>
-      </tr>`;
-    }).join('');
-  }
+    ['A','B'].forEach(poolName => {
+      const tbody = document.getElementById('standing-' + poolName);
+      if (!tbody) return;
 
-  /* ══════════════════════════════════════════════════════════════
-     RENDU BUTEURS
-  ══════════════════════════════════════════════════════════════ */
-  function renderScorers(scorers) {
+      const poolRows = rows.filter(r =>
+        r.group?.name?.toLowerCase().includes(poolName.toLowerCase()) ||
+        r.group?.name === 'Poule ' + poolName
+      );
+
+      tbody.innerHTML = poolRows.map((r, i) => {
+        const name = r.team?.name || '?';
+        const diff = r.goal_diff ?? (r.goals_for - r.goals_against);
+        return `<tr>
+          <td><span class="pill">${i+1}</span></td>
+          <td><div class="table-team">
+            ${getLogo(name) ? `<img class="club-logo" src="${getLogo(name)}" alt="${name}" width="32" height="32" loading="lazy">` : ''}
+            <strong>${name}</strong>
+          </div></td>
+          <td>${r.played||0}</td>
+          <td>${r.won||0}</td>
+          <td>${r.drawn||0}</td>
+          <td>${r.lost||0}</td>
+          <td>${r.goals_for||0}</td>
+          <td>${r.goals_against||0}</td>
+          <td>${diff > 0 ? '+'+diff : diff}</td>
+          <td><strong>${r.points||0}</strong></td>
+        </tr>`;
+      }).join('');
+
+      // Barrages
+      if (poolRows.length >= 3) {
+        const p2 = poolRows[1]?.team?.name || '?';
+        const p3 = poolRows[2]?.team?.name || '?';
+        if (poolName === 'A') {
+          const el1 = document.getElementById('b1-home-name');
+          const el3 = document.getElementById('b2-away-name');
+          const et1 = document.getElementById('b1-teams');
+          if (el1) el1.textContent = p2;
+          if (el3) el3.textContent = p3;
+          if (et1) et1.textContent = `${p2} vs —`;
+          window._p2A = p2; window._p3A = p3;
+        } else {
+          const el2 = document.getElementById('b2-home-name');
+          const el4 = document.getElementById('b1-away-name');
+          const et2 = document.getElementById('b2-teams');
+          if (el2) el2.textContent = p2;
+          if (el4) el4.textContent = p3;
+          if (et2) et2.textContent = `${p2} vs —`;
+          if (document.getElementById('b1-teams'))
+            document.getElementById('b1-teams').textContent = `${window._p2A||'?'} vs ${p3}`;
+          if (document.getElementById('b2-teams'))
+            document.getElementById('b2-teams').textContent = `${p2} vs ${window._p3A||'?'}`;
+        }
+      }
+    });
+  } catch(e) { console.warn('Standings error:', e); }
+}
+
+/* ══════════════════════════════════════════════
+   BUTEURS (depuis table goals + players)
+══════════════════════════════════════════════ */
+async function loadScorers() {
+  try {
+    const goals = await sbGet(
+      '/rest/v1/goals?select=player:players(name),team:teams(name)&own_goal=eq.false'
+    );
+
+    // Compter les buts par joueur
+    const counts = {};
+    goals.forEach(g => {
+      const key = g.player?.name || 'Inconnu';
+      if (!counts[key]) counts[key] = { name: key, team: g.team?.name || '?', goals: 0 };
+      counts[key].goals++;
+    });
+
+    const sorted = Object.values(counts).sort((a, b) => b.goals - a.goals).slice(0, 10);
     const el = document.getElementById('scorers-list');
     if (!el) return;
-    if (!scorers || scorers.length === 0) {
-      el.innerHTML = '<div style="color:rgba(255,255,255,.4); font-size:14px; padding:12px;">Aucun buteur enregistré pour l\'instant.</div>';
+
+    if (sorted.length === 0) {
+      el.innerHTML = '<div style="color:rgba(255,255,255,.4);font-size:14px;padding:12px;">Aucun buteur enregistré pour l\'instant.</div>';
       return;
     }
-    el.innerHTML = scorers.slice(0, 10).map((s, i) => `
+
+    el.innerHTML = sorted.map((s, i) => `
       <div class="scorer-row">
         <div class="rank">${i+1}</div>
         <div>
-          <div class="scorer-name">${s.player_name}</div>
+          <div class="scorer-name">${s.name}</div>
           <div class="scorer-team">${s.team}</div>
         </div>
         <div class="goals-badge">${s.goals}</div>
       </div>`).join('');
+  } catch(e) { console.warn('Scorers error:', e); }
+}
+
+/* ══════════════════════════════════════════════
+   TIRAGE AU SORT
+══════════════════════════════════════════════ */
+let qualified = [];
+let drawDone = false;
+let drawInterval;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
   }
+  return a;
+}
 
-  /* ══════════════════════════════════════════════════════════════
-     RENDU BARRAGES
-  ══════════════════════════════════════════════════════════════ */
-  function updateBarrages(st) {
-    const sortedA = sortPool(POOL_TEAMS.A, st);
-    const sortedB = sortPool(POOL_TEAMS.B, st);
-
-    const b1Home = sortedA[1]; // 2ème Poule A
-    const b1Away = sortedB[2]; // 3ème Poule B
-    const b2Home = sortedB[1]; // 2ème Poule B
-    const b2Away = sortedA[2]; // 3ème Poule A
-
-    if (b1Home) {
-      document.getElementById('b1-home-name').textContent = b1Home;
-      document.getElementById('b1-away-name').textContent = b1Away || '3ème Poule B';
-      document.getElementById('b1-teams').textContent = `${b1Home} vs ${b1Away || '?'}`;
-    }
-    if (b2Home) {
-      document.getElementById('b2-home-name').textContent = b2Home;
-      document.getElementById('b2-away-name').textContent = b2Away || '3ème Poule A';
-      document.getElementById('b2-teams').textContent = `${b2Home} vs ${b2Away || '?'}`;
-    }
+function renderSlot(slotId, team) {
+  const el = document.getElementById(slotId);
+  if (!el) return;
+  el.innerHTML = '';
+  if (team.img) {
+    const img = document.createElement('img');
+    img.src = team.img; img.alt = team.name;
+    img.width = 32; img.height = 32; img.style.objectFit = 'contain';
+    el.appendChild(img);
   }
+  const span = document.createElement('span');
+  span.className = 'bracket-slot-name';
+  span.textContent = team.name;
+  el.appendChild(span);
+  el.classList.add('drawn');
+}
 
-  /* ══════════════════════════════════════════════════════════════
-     CHARGEMENT PRINCIPAL DEPUIS SUPABASE
-  ══════════════════════════════════════════════════════════════ */
-  async function loadAll() {
-    try {
-      // 1. Matchs
-      const mData = await sbGet('/rest/v1/matches?select=*');
-      allMatches = mData;
-
-      renderMatches('A');
-      renderMatches('B');
-
-      // 2. Classement
-      const st = computeStandings();
-      const sortedA = sortPool(POOL_TEAMS.A, st);
-      const sortedB = sortPool(POOL_TEAMS.B, st);
-      renderStanding('A', st, sortedA);
-      renderStanding('B', st, sortedB);
-
-      // 3. Barrages
-      updateBarrages(st);
-
-      // 4. Qualifiés pour le tirage
-      qualified = [
-        ...sortedA.slice(0,2).map(n => ({ name: n, img: teamImg(n) })),
-        ...sortedB.slice(0,2).map(n => ({ name: n, img: teamImg(n) }))
-      ];
-
-      // 5. Buteurs
-      try {
-        const sc = await sbGet('/rest/v1/scorers?order=goals.desc&limit=10');
-        renderScorers(sc);
-      } catch(e) { console.warn('Scorers:', e); }
-
-      // 6. Tirage déjà effectué ?
-      try {
-        const dr = await sbGet('/rest/v1/draw_result?id=eq.1&select=sf1_t1,sf1_t2,sf2_t1,sf2_t2');
-        if (dr && dr.length > 0 && dr[0].sf1_t1 && !drawDone) {
-          const d = dr[0];
-          const fn = n => ({ name: normName(n), img: teamImg(normName(n)) });
-          renderSlot('sf1-slot1', fn(d.sf1_t1));
-          renderSlot('sf1-slot2', fn(d.sf1_t2));
-          renderSlot('sf2-slot1', fn(d.sf2_t1));
-          renderSlot('sf2-slot2', fn(d.sf2_t2));
-          const dst = document.getElementById('draw-status');
-          dst.className = 'draw-status done';
-          dst.textContent = `✓ Tirage effectué · SF1: ${normName(d.sf1_t1)} vs ${normName(d.sf1_t2)} · SF2: ${normName(d.sf2_t1)} vs ${normName(d.sf2_t2)}`;
-          document.getElementById('draw-btn').disabled = true;
-          document.getElementById('reset-btn').style.display = 'inline-block';
-          drawDone = true;
-        }
-      } catch(e) { console.warn('Draw:', e); }
-
-    } catch(e) {
-      console.warn('Supabase offline — affichage statique', e);
-    }
-  }
-
-  /* ══════════════════════════════════════════════════════════════
-     TIRAGE AU SORT
-  ══════════════════════════════════════════════════════════════ */
-  let qualified = [
-    { name: 'Arsenal', img: teamImg('Arsenal') },
-    { name: 'Barça',   img: teamImg('Barça') },
-    { name: 'Real',    img: teamImg('Real') },
-    { name: 'City',    img: teamImg('City') }
-  ];
-  let drawDone = false;
-  let drawInterval;
-
-  function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length-1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i+1));
-      [a[i],a[j]] = [a[j],a[i]];
-    }
-    return a;
-  }
-
-  function renderSlot(slotId, team) {
-    const el = document.getElementById(slotId);
-    if (!el) return;
-    el.innerHTML = '';
-    if (team.img) {
-      const img = document.createElement('img');
-      img.src = team.img; img.alt = team.name;
-      img.width = 32; img.height = 32; img.style.objectFit = 'contain'; img.style.flexShrink = '0';
-      el.appendChild(img);
-    }
-    const name = document.createElement('span');
-    name.className = 'bracket-slot-name';
-    name.textContent = team.name;
-    el.appendChild(name);
-    el.classList.add('drawn');
-  }
-
-  function startDraw() {
-    if (drawDone) return;
-    const btn = document.getElementById('draw-btn');
-    const status = document.getElementById('draw-status');
-    btn.disabled = true;
-    btn.classList.add('spinning');
-    status.className = 'draw-status active';
-    let frame = 0;
-    const totalFrames = 28;
-    drawInterval = setInterval(() => {
-      frame++;
-      const shuffled = shuffle(qualified);
-      ['sf1-slot1','sf1-slot2','sf2-slot1','sf2-slot2'].forEach((id, i) => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        const t = shuffled[i];
-        el.innerHTML = `<img src="${t.img}" alt="${t.name}" width="32" height="32" style="object-fit:contain;flex-shrink:0;"><span class="bracket-slot-name">${t.name}</span>`;
-        el.classList.remove('drawn');
-      });
-      status.textContent = 'Tirage en cours…';
-      if (frame >= totalFrames) {
-        clearInterval(drawInterval);
-        const result = shuffle(qualified);
-        ['sf1-slot1','sf1-slot2','sf2-slot1','sf2-slot2'].forEach((id, i) => renderSlot(id, result[i]));
-        status.className = 'draw-status done';
-        status.textContent = `✓ Tirage terminé · SF1: ${result[0].name} vs ${result[1].name} · SF2: ${result[2].name} vs ${result[3].name}`;
-        btn.classList.remove('spinning');
-        btn.disabled = true;
-        document.getElementById('reset-btn').style.display = 'inline-block';
-        drawDone = true;
+function startDraw() {
+  if (drawDone) return;
+  // Utiliser les top 2 de chaque poule si dispo
+  const tbody_A = document.getElementById('standing-A');
+  const tbody_B = document.getElementById('standing-B');
+  const getTop2 = (tbody) => {
+    const rows = tbody?.querySelectorAll('tr');
+    const res = [];
+    if (rows) rows.forEach((r, i) => {
+      if (i < 2) {
+        const name = r.querySelector('strong')?.textContent || '?';
+        res.push({ name, img: getLogo(name) });
       }
-    }, 90);
+    });
+    return res;
+  };
+  qualified = [...getTop2(tbody_A), ...getTop2(tbody_B)];
+  if (qualified.length < 4) {
+    qualified = [
+      { name: 'Arsenal', img: getLogo('Arsenal') },
+      { name: 'Barça',   img: getLogo('Barca') },
+      { name: 'Real',    img: getLogo('Real') },
+      { name: 'City',    img: getLogo('City') }
+    ];
   }
 
-  document.getElementById('draw-btn').addEventListener('click', startDraw);
-
-  document.getElementById('reset-btn').addEventListener('click', () => {
-    drawDone = false;
-    clearInterval(drawInterval);
-    ['sf1-slot1','sf1-slot2','sf2-slot1','sf2-slot2'].forEach(id => {
+  const btn = document.getElementById('draw-btn');
+  const status = document.getElementById('draw-status');
+  btn.disabled = true;
+  btn.classList.add('spinning');
+  status.className = 'draw-status active';
+  let frame = 0;
+  drawInterval = setInterval(() => {
+    frame++;
+    const s = shuffle(qualified);
+    ['sf1-slot1','sf1-slot2','sf2-slot1','sf2-slot2'].forEach((id, i) => {
       const el = document.getElementById(id);
-      el.innerHTML = '<span class="bracket-slot-placeholder">En attente du tirage…</span>';
-      el.classList.remove('drawn','winner');
-    });
-    ['final-slot1','final-slot2'].forEach((id, i) => {
-      const el = document.getElementById(id);
-      el.innerHTML = `<span style="font-size:13px;color:rgba(255,255,255,.35);font-style:italic;">Vainqueur SF${i+1}</span>`;
+      if (!el) return;
+      const t = s[i];
+      el.innerHTML = `${t.img ? `<img src="${t.img}" alt="${t.name}" width="32" height="32" style="object-fit:contain">` : ''}<span class="bracket-slot-name">${t.name}</span>`;
       el.classList.remove('drawn');
     });
-    const status = document.getElementById('draw-status');
-    status.className = 'draw-status';
-    status.textContent = '4 équipes qualifiées en attente du tirage';
-    const btn = document.getElementById('draw-btn');
-    btn.disabled = false;
-    btn.classList.remove('spinning');
-    document.getElementById('reset-btn').style.display = 'none';
-  });
-
-  /* ══════════════════════════════════════════════════════════════
-     ADMIN
-  ══════════════════════════════════════════════════════════════ */
-  document.getElementById('admin-access-btn').addEventListener('click', () => {
-    document.getElementById('admin-panel').classList.add('open');
-  });
-
-  document.getElementById('login-btn').addEventListener('click', () => {
-    const pwd = document.getElementById('admin-pwd').value;
-    if (pwd === ADMIN_PWD) {
-      sessionStorage.setItem('tr_admin','1');
-      document.getElementById('admin-panel').classList.remove('open');
-      document.body.classList.add('admin-active');
-      window.location.href = 'admin.html';
-    } else {
-      document.getElementById('login-error').classList.add('show');
-      document.getElementById('admin-pwd').value = '';
+    status.textContent = 'Tirage en cours…';
+    if (frame >= 28) {
+      clearInterval(drawInterval);
+      const result = shuffle(qualified);
+      ['sf1-slot1','sf1-slot2','sf2-slot1','sf2-slot2'].forEach((id, i) => renderSlot(id, result[i]));
+      status.className = 'draw-status done';
+      status.textContent = `✓ SF1: ${result[0].name} vs ${result[1].name} · SF2: ${result[2].name} vs ${result[3].name}`;
+      btn.classList.remove('spinning');
+      btn.disabled = true;
+      document.getElementById('reset-btn').style.display = 'inline-block';
+      drawDone = true;
     }
+  }, 90);
+}
+
+document.getElementById('draw-btn').addEventListener('click', startDraw);
+
+document.getElementById('reset-btn').addEventListener('click', () => {
+  drawDone = false;
+  clearInterval(drawInterval);
+  ['sf1-slot1','sf1-slot2','sf2-slot1','sf2-slot2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = '<span class="bracket-slot-placeholder">En attente du tirage…</span>';
+    el.classList.remove('drawn','winner');
   });
+  const status = document.getElementById('draw-status');
+  status.className = 'draw-status';
+  status.textContent = '4 équipes qualifiées en attente du tirage';
+  const btn = document.getElementById('draw-btn');
+  btn.disabled = false;
+  btn.classList.remove('spinning');
+  document.getElementById('reset-btn').style.display = 'none';
+});
 
-  document.getElementById('admin-pwd').addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('login-btn').click();
-  });
+/* ══════════════════════════════════════════════
+   ADMIN
+══════════════════════════════════════════════ */
+document.getElementById('admin-access-btn').addEventListener('click', () => {
+  document.getElementById('admin-panel').classList.add('open');
+});
+document.getElementById('login-btn').addEventListener('click', () => {
+  const pwd = document.getElementById('admin-pwd').value;
+  if (pwd === ADMIN_PWD) {
+    sessionStorage.setItem('tr_admin','1');
+    document.getElementById('admin-panel').classList.remove('open');
+    window.location.href = 'admin.html';
+  } else {
+    document.getElementById('login-error').classList.add('show');
+    document.getElementById('admin-pwd').value = '';
+  }
+});
+document.getElementById('admin-pwd').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('login-btn').click();
+});
 
-  /* ══════════════════════════════════════════════════════════════
-     SCROLL REVEAL
-  ══════════════════════════════════════════════════════════════ */
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+/* ══════════════════════════════════════════════
+   SCROLL REVEAL + INIT
+══════════════════════════════════════════════ */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
 
-  /* ══════════════════════════════════════════════════════════════
-     POLLING TEMPS RÉEL (refresh toutes les 15s)
-  ══════════════════════════════════════════════════════════════ */
-  loadAll();
-  setInterval(loadAll, 15000);
-  </script>
+loadAll();
+setInterval(loadAll, 15000);
+</script>
 </body>
 </html>
