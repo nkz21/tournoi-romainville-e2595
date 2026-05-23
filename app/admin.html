@@ -327,11 +327,11 @@
   let scores = {};
   // Charge depuis localStorage en premier
 const _saved = localStorage.getItem('tr_scores');
-if (_saved) scores = JSON.parse(_saved);
+try { if (_saved) scores = JSON.parse(_saved); } catch(e) { localStorage.removeItem('tr_scores'); }
 
   async function loadScores() {
     try {
-      const data = await sb('/rest/v1/matches?select=id,home_score,away_score,status&order=order_index');
+              const data = await sb('/rest/v1/matches?select=id,home_score,away_score,status');
       data.forEach(m => { scores[m.id] = { home: m.home_score ?? '', away: m.away_score ?? '', status: m.status || 'pending' }; });
               localStorage.setItem('tr_scores', JSON.stringify(scores));
     } catch(e) { console.warn('Supabase offline, mode local'); renderMatches(); }
