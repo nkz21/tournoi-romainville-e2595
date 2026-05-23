@@ -1,421 +1,321 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tournoi Romainville · Hub</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at top, #3a35d4 0%, #05071e 45%, #000 100%);
-      color: #f5f7ff;
-      padding: 24px 16px 60px;
-    }
-    .shell { max-width: 1100px; margin: 0 auto; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{min-height:100vh;font-family:'Inter',sans-serif;background:radial-gradient(circle at top,#3a35d4 0%,#05071e 45%,#000 100%);color:#f5f7ff;padding:24px 16px 60px}
+    .shell{max-width:1100px;margin:0 auto}
 
-    .topbar {
-      display: flex; align-items: center; justify-content: space-between; gap: 10px;
-      margin-bottom: 26px;
-    }
-    .brand { display: flex; align-items: center; gap: 10px; }
-    .brand-dot { width: 10px; height: 10px; border-radius: 50%; background: #7f5cff; box-shadow: 0 0 10px #7f5cff; }
-    .brand-title {
-      font-family: 'Oswald', sans-serif;
-      font-size: 1.5rem;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-    .brand-sub { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.5); }
-    .btn-admin {
-      font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
-      padding: 7px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.2);
-      background: rgba(255,255,255,.05);
-      color: #f5f7ff;
-      text-decoration: none;
-    }
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:26px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand-dot{width:10px;height:10px;border-radius:50%;background:#7f5cff;box-shadow:0 0 10px #7f5cff}
+    .brand-title{font-family:'Oswald',sans-serif;font-size:1.5rem;letter-spacing:.08em;text-transform:uppercase}
+    .brand-sub{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+    .btn-admin{font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:7px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);color:#f5f7ff;text-decoration:none}
 
-    h1 {
-      font-family: 'Oswald', sans-serif;
-      font-size: clamp(2.1rem, 4vw, 2.8rem);
-      letter-spacing: .02em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    p.lead {
-      font-size: 14px;
-      color: rgba(255,255,255,.7);
-      margin-bottom: 24px;
-      max-width: 640px;
-    }
+    h1{font-family:'Oswald',sans-serif;font-size:clamp(2.1rem,4vw,2.8rem);letter-spacing:.02em;text-transform:uppercase;margin-bottom:8px}
+    p.lead{font-size:14px;color:rgba(255,255,255,.7);margin-bottom:24px;max-width:640px}
 
-    section { margin-bottom: 32px; }
-    section h2 {
-      font-family: 'Oswald', sans-serif;
-      font-size: 1.4rem;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    section p.desc {
-      font-size: 13px;
-      color: rgba(255,255,255,.6);
-      margin-bottom: 12px;
-    }
+    section{margin-bottom:32px}
+    section h2{font-family:'Oswald',sans-serif;font-size:1.4rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+    section p.desc{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:12px}
 
-    .match-group { margin-bottom: 14px; padding: 10px 12px; border-radius: 16px; background: rgba(5,7,30,.9); border: 1px solid rgba(255,255,255,.06); }
-    .match-group h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .16em; color: rgba(255,255,255,.5); margin-bottom: 6px; }
+    .pools-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    @media(max-width:600px){.pools-grid{grid-template-columns:1fr}}
+    .pool-col h3{font-size:12px;text-transform:uppercase;letter-spacing:.18em;color:rgba(255,255,255,.5);margin-bottom:8px}
 
-    .match-row-public { display: flex; flex-direction: column; padding: 4px 0; }
-    .match-line-teams { font-size: 14px; display: flex; flex-wrap: wrap; gap: 4px; align-items: baseline; }
-    .match-line-teams .match-home,
-    .match-line-teams .match-away { font-weight: 700; }
-    .match-line-teams .match-leg {
-      font-size: 11px;
-      color: rgba(255,255,255,.55);
-      margin-left: 4px;
-    }
-    .match-line-score { font-size: 13px; color: rgba(255,255,255,.75); display: flex; gap: 8px; margin-top: 2px; }
-    .match-status { font-size: 11px; text-transform: uppercase; letter-spacing: .15em; color: rgba(255,255,255,.6); }
+    .match-group{margin-bottom:12px;padding:12px 14px;border-radius:16px;background:rgba(5,7,30,.9);border:1px solid rgba(255,255,255,.06)}
+    .match-group-title{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.4);margin-bottom:8px;font-weight:700}
 
-    .standings-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 8px 0 18px;
-      font-size: 13px;
-    }
-    .standings-table th,
-    .standings-table td {
-      padding: 4px 6px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      text-align: center;
-    }
-    .standings-table th:nth-child(2),
-    .standings-table td:nth-child(2) { text-align: left; }
+    .match-row-pub{padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+    .match-row-pub:last-child{border-bottom:none}
+    .match-teams-line{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;font-size:14px}
+    .team-home,.team-away{font-weight:700}
+    .match-leg-lbl{font-size:11px;color:rgba(255,255,255,.35);margin-left:4px}
+    .match-score-line{display:flex;gap:10px;align-items:center;margin-top:3px;font-size:13px}
+    .score-val{font-family:'Oswald',sans-serif;font-size:1.2rem;color:#f5f7ff}
+    .score-dash{color:rgba(255,255,255,.3)}
+    .status-badge{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:2px 8px;border-radius:999px}
+    .status-badge.scheduled{background:rgba(255,255,255,.08);color:rgba(255,255,255,.4)}
+    .status-badge.live{background:rgba(240,213,113,.15);color:#f0d571;border:1px solid rgba(240,213,113,.3)}
+    .status-badge.done{background:rgba(113,240,168,.1);color:#71f0a8;border:1px solid rgba(113,240,168,.25)}
 
-    .scorers-table { list-style: none; padding-left: 0; margin: 0; }
-    .scorer-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 0;
-      font-size: 14px;
-      border-bottom: 1px solid rgba(255,255,255,.05);
-    }
-    .scorer-name { font-weight: 600; }
-    .scorer-team { opacity: 0.75; font-size: 13px; }
-    .scorer-goals { font-weight: 600; }
+    .standings-table{width:100%;border-collapse:collapse;margin:6px 0 18px;font-size:13px}
+    .standings-table th,.standings-table td{padding:5px 7px;border-bottom:1px solid rgba(255,255,255,.07);text-align:center}
+    .standings-table th:nth-child(2),.standings-table td:nth-child(2){text-align:left}
+    .standings-table thead th{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);font-weight:700}
 
-    @media (max-width: 600px) {
-      .standings-table th, .standings-table td { font-size: 12px; padding: 3px 4px; }
-      .match-line-teams { font-size: 13px; }
-    }
+    .scorers-ol{list-style:none;padding:0;margin:0}
+    .scorer-item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:14px}
+    .scorer-item:last-child{border-bottom:none}
+    .scorer-lname{font-weight:700}
+    .scorer-lteam{opacity:.6;font-size:13px}
+    .scorer-lgoals{font-family:'Oswald',sans-serif;font-size:1.1rem}
+
+    .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#f0d571;box-shadow:0 0 6px #f0d571;animation:pulse 1.2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
   </style>
 </head>
 <body>
-  <div class="shell">
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand-dot"></div>
-        <div>
-          <div class="brand-title">Tournoi Romainville</div>
-          <div class="brand-sub">Hub scores & classement</div>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <div>
+        <div class="brand-title">Tournoi Romainville</div>
+        <div class="brand-sub">Hub scores & classement</div>
+      </div>
+    </div>
+    <a href="login.html" class="btn-admin">Accès admin</a>
+  </header>
+
+  <main>
+    <h1>Le hub du tournoi</h1>
+    <p class="lead">
+      Scores en temps réel, classement et meilleurs buteurs.
+      Mise à jour automatique toutes les 15 secondes.
+    </p>
+
+    <section>
+      <h2>Les matchs</h2>
+      <p class="desc">Aller / Retour regroupés par confrontation.</p>
+      <div class="pools-grid">
+        <div class="pool-col">
+          <h3>Poule A</h3>
+          <div id="matches-A"></div>
+        </div>
+        <div class="pool-col">
+          <h3>Poule B</h3>
+          <div id="matches-B"></div>
         </div>
       </div>
-      <a href="login.html" class="btn-admin">Accès admin</a>
-    </header>
+    </section>
 
-    <main>
-      <h1>Le hub du tournoi</h1>
-      <p class="lead">
-        Bienvenue sur le hub du tournoi. Retrouve en temps réel les scores, le classement
-        et les meilleurs buteurs. Coup d’envoi demain à 10h, avec mise à jour en direct toute la journée.
-      </p>
+    <section>
+      <h2>Le classement</h2>
+      <p class="desc">Recalculé depuis la base après chaque match terminé.</p>
+      <div class="pools-grid">
+        <div class="pool-col">
+          <h3>Poule A</h3>
+          <div id="standings-A"></div>
+        </div>
+        <div class="pool-col">
+          <h3>Poule B</h3>
+          <div id="standings-B"></div>
+        </div>
+      </div>
+    </section>
 
-      <section id="teams-section">
-        <h2>Les équipes</h2>
-        <p class="desc">6 équipes réparties en 2 poules de 3, matchs aller/retour.</p>
-        <p style="font-size:13px;opacity:.8;">
-          Poule A&nbsp;: Arsenal, Barça, PSG · Poule B&nbsp;: Real Madrid, Man City, Bayern.
-        </p>
-      </section>
+    <section>
+      <h2>Meilleurs buteurs</h2>
+      <p class="desc">Classement live mis à jour après chaque but enregistré.</p>
+      <div id="scorers-wrap"></div>
+    </section>
+  </main>
+</div>
 
-      <section id="matches-section">
-        <h2>Les matchs</h2>
-        <p class="desc">Aller et retour regroupés par confrontation pour une lecture rapide.</p>
-        <h3 style="font-size:13px;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.6);margin:6px 0;">Poule A</h3>
-        <div id="matches-A"></div>
-        <h3 style="font-size:13px;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.6);margin:14px 0 6px;">Poule B</h3>
-        <div id="matches-B"></div>
-      </section>
+<script>
+  const SB_URL = 'https://afqmjyxgkwipiagejxsw.supabase.co';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmcW1qeXhna3dpcGlhZ2VqeHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MjE5MzcsImV4cCI6MjA5NTA5NzkzN30.FNQ1P1DnSANFOE7OW9AkvhNrZq1N6unWZV8Phn3z9vg';
 
-      <section id="standings-section">
-        <h2>Le classement</h2>
-        <p class="desc">Recalculé automatiquement après chaque match terminé.</p>
-        <div id="standings-A"></div>
-        <div id="standings-B"></div>
-      </section>
+  async function sb(path) {
+    const r = await fetch(SB_URL + path, {
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+    });
+    if (!r.ok) throw new Error(await r.text());
+    return r.json();
+  }
 
-      <section id="scorers-section">
-        <h2>Meilleurs buteurs</h2>
-        <p class="desc">Classement mis à jour en temps réel après chaque match.</p>
-        <div id="scorers-list"></div>
-      </section>
-    </main>
-  </div>
+  const TEAMS = {
+    'bbbbbbbb-0000-0000-0000-000000000001': { name: 'PSG',         pool: 'A' },
+    'bbbbbbbb-0000-0000-0000-000000000002': { name: 'Arsenal',     pool: 'A' },
+    'bbbbbbbb-0000-0000-0000-000000000003': { name: 'Barcelone',   pool: 'A' },
+    'bbbbbbbb-0000-0000-0000-000000000004': { name: 'Real Madrid', pool: 'B' },
+    'bbbbbbbb-0000-0000-0000-000000000005': { name: 'Man City',    pool: 'B' },
+    'bbbbbbbb-0000-0000-0000-000000000006': { name: 'Bayern',      pool: 'B' },
+  };
 
-  <script>
-    const SB_URL = 'https://afqmjyxgkwipiagejxsw.supabase.co';
-    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmcW1qeXhna3dpcGlhZ2VqeHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MjE5MzcsImV4cCI6MjA5NTA5NzkzN30.FNQ1P1DnSANFOE7OW9AkvhNrZq1N6unWZV8Phn3z9vg';
+  const MATCHES_META = {
+    'c86320a2-7483-4393-bde6-a6a960d903a5': { pool:'A', home:'PSG',        away:'Arsenal',    leg:1 },
+    '50305daa-cdb8-48b6-8c2c-652c03293228': { pool:'A', home:'Arsenal',    away:'PSG',        leg:2 },
+    '2813ce19-db57-4d81-9997-6c97814dc209': { pool:'A', home:'PSG',        away:'Barcelone',  leg:1 },
+    'a51c8a68-6936-45fc-b190-3f7e52e28c24': { pool:'A', home:'Barcelone',  away:'PSG',        leg:2 },
+    '4cb51676-0268-4852-8db8-a2e9c9b5bae9': { pool:'A', home:'Arsenal',    away:'Barcelone',  leg:1 },
+    '0b42d04d-b05b-42d1-8113-b9ada766190a': { pool:'A', home:'Barcelone',  away:'Arsenal',    leg:2 },
+    '9ca93e6a-be64-4268-9c73-e492ea8b4ab8': { pool:'B', home:'Real Madrid',away:'Man City',   leg:1 },
+    '346a09e8-4e45-4b05-a1ef-abed5f6739f9': { pool:'B', home:'Man City',   away:'Real Madrid',leg:2 },
+    '65da81cd-b3fc-46b1-bd26-3c06ed9f2d07': { pool:'B', home:'Real Madrid',away:'Bayern',     leg:1 },
+    'a9e77852-5ec0-4146-84d6-fcae65793532': { pool:'B', home:'Bayern',     away:'Real Madrid',leg:2 },
+    'd2b775f5-47f6-4b3f-8f6e-c5478c17d583': { pool:'B', home:'Man City',   away:'Bayern',     leg:1 },
+    '5145ac8b-5524-4b65-80b8-4f2a1020cacb': { pool:'B', home:'Bayern',     away:'Man City',   leg:2 },
+  };
 
-    async function sb(path) {
-      const r = await fetch(SB_URL + path, {
-        headers: {
-          'apikey': SB_KEY,
-          'Authorization': 'Bearer ' + SB_KEY
-        }
-      });
-      if (!r.ok) throw new Error(await r.text());
-      return r.json();
-    }
+  // ─── Chargement ───────────────────────────────────────────────
+  async function loadAll() {
+    try {
+      const matches = await sb('/rest/v1/matches?select=id,home_score,away_score,status&order=created_at');
+      renderMatches(matches);
+    } catch(e) { console.error('Erreur matchs', e); }
 
-    const MATCHES = [
-      { id:'a1', pool:'A', home:'Arsenal',    away:'Barça',       leg:'Aller'  },
-      { id:'a2', pool:'A', home:'Barça',      away:'Arsenal',     leg:'Retour' },
-      { id:'a3', pool:'A', home:'Barça',      away:'PSG',         leg:'Aller'  },
-      { id:'a4', pool:'A', home:'PSG',        away:'Barça',       leg:'Retour' },
-      { id:'a5', pool:'A', home:'PSG',        away:'Arsenal',     leg:'Aller'  },
-      { id:'a6', pool:'A', home:'Arsenal',    away:'PSG',         leg:'Retour' },
-      { id:'b1', pool:'B', home:'Real Madrid',away:'Bayern',      leg:'Aller'  },
-      { id:'b2', pool:'B', home:'Bayern',     away:'Real Madrid', leg:'Retour' },
-      { id:'b3', pool:'B', home:'Bayern',     away:'Man City',    leg:'Aller'  },
-      { id:'b4', pool:'B', home:'Man City',   away:'Bayern',      leg:'Retour' },
-      { id:'b5', pool:'B', home:'Man City',   away:'Real Madrid', leg:'Aller'  },
-      { id:'b6', pool:'B', home:'Real Madrid',away:'Man City',    leg:'Retour' }
-    ];
+    try {
+      const standings = await sb(
+        '/rest/v1/standings?select=played,won,drawn,lost,goals_for,goals_against,goal_diff,points,team_id&order=points.desc,goal_diff.desc,goals_for.desc'
+      );
+      renderStandings(standings);
+    } catch(e) { console.error('Erreur classement', e); }
 
-    let scores = {};
-    let standings = { A: {}, B: {} };
+    try {
+      const goals = await sb('/rest/v1/goals?select=player_id,players(name,team_id)&own_goal=eq.false');
+      renderScorers(goals);
+    } catch(e) { console.error('Erreur buteurs', e); }
+  }
 
-    async function loadPublicData() {
-      try {
-        const matches = await sb('/rest/v1/matches?select=id,home_score,away_score,status&order=order_index');
-        scores = {};
-        matches.forEach(m => {
-          scores[m.id] = {
-            home: m.home_score ?? null,
-            away: m.away_score ?? null,
-            status: m.status || 'pending'
-          };
+  // ─── Matchs ───────────────────────────────────────────────────
+  function renderMatches(matches) {
+    const byId = {};
+    matches.forEach(m => byId[m.id] = m);
+
+    ['A','B'].forEach(pool => {
+      const container = document.getElementById('matches-' + pool);
+      container.innerHTML = '';
+
+      // Grouper par confrontation (même paire d'équipes)
+      const seen = {};
+      const groups = [];
+      Object.entries(MATCHES_META)
+        .filter(([,meta]) => meta.pool === pool)
+        .forEach(([id, meta]) => {
+          const key = [meta.home, meta.away].sort().join('|');
+          if (!seen[key]) { seen[key] = []; groups.push(seen[key]); }
+          seen[key].push({ id, ...meta });
         });
 
-        computeStandings();
-        renderMatches();
-        renderStandings();
-      } catch (e) {
-        console.error('Erreur chargement matches', e);
-      }
+      groups.forEach(group => {
+        const wrap = document.createElement('div');
+        wrap.className = 'match-group';
 
-      try {
-        const scorers = await sb('/rest/v1/scorers?select=name,team,goals&order=goals.desc');
-        renderScorers(scorers);
-      } catch (e) {
-        console.error('Erreur chargement buteurs', e);
-      }
-    }
+        const title = document.createElement('div');
+        title.className = 'match-group-title';
+        title.textContent = group[0].home + ' · ' + group[0].away;
+        wrap.appendChild(title);
 
-    function initTeam(pool, name) {
-      if (!standings[pool][name]) {
-        standings[pool][name] = {
-          team: name,
-          PJ: 0,
-          V: 0,
-          N: 0,
-          D: 0,
-          BP: 0,
-          BC: 0,
-          Diff: 0,
-          Pts: 0
-        };
-      }
-    }
+        group.forEach(m => {
+          const sc = byId[m.id] || {};
+          const row = document.createElement('div');
+          row.className = 'match-row-pub';
 
-    function computeStandings() {
-      standings = { A: {}, B: {} };
+          const hasScore = sc.home_score != null && sc.away_score != null;
+          const statusLabel = { scheduled:'À jouer', live:'En cours', done:'Terminé' }[sc.status] || 'À jouer';
+          const isLive = sc.status === 'live';
 
-      MATCHES.forEach(m => {
-        const sc = scores[m.id];
-        if (!sc || sc.home == null || sc.away == null || sc.status !== 'done') return;
-
-        const pool = m.pool;
-        initTeam(pool, m.home);
-        initTeam(pool, m.away);
-
-        const th = standings[pool][m.home];
-        const ta = standings[pool][m.away];
-
-        th.PJ++; ta.PJ++;
-        th.BP += sc.home; th.BC += sc.away;
-        ta.BP += sc.away; ta.BC += sc.home;
-
-        if (sc.home > sc.away) {
-          th.V++; ta.D++;
-          th.Pts += 3;
-        } else if (sc.home < sc.away) {
-          ta.V++; th.D++;
-          ta.Pts += 3;
-        } else {
-          th.N++; ta.N++;
-          th.Pts += 1;
-          ta.Pts += 1;
-        }
-      });
-
-      ['A','B'].forEach(pool => {
-        Object.values(standings[pool]).forEach(t => {
-          t.Diff = t.BP - t.BC;
-        });
-      });
-    }
-
-    function renderMatches() {
-      ['A','B'].forEach(pool => {
-        const container = document.getElementById('matches-' + pool);
-        if (!container) return;
-        container.innerHTML = '';
-
-        const list = MATCHES.filter(m => m.pool === pool);
-
-        for (let i = 0; i < list.length; i += 2) {
-          const wrapper = document.createElement('div');
-          wrapper.className = 'match-group';
-
-          const title = document.createElement('h3');
-          title.textContent = list[i].home + ' · ' + list[i].away;
-          wrapper.appendChild(title);
-
-          [list[i], list[i+1]].filter(Boolean).forEach(m => {
-            const sc = scores[m.id] || {};
-            const row = document.createElement('div');
-            row.className = 'match-row-public';
-
-            const statusLabel = ({
-              pending: 'À jouer',
-              live: 'En cours',
-              done: 'Terminé'
-            })[sc.status] || 'À jouer';
-
-            const scoreText = (sc.home == null || sc.away == null)
-              ? '- : -'
-              : sc.home + ' : ' + sc.away;
-
-            row.innerHTML = `
-              <div class="match-line-teams">
-                <span class="match-home">${m.home}</span>
-                <span class="match-vs">vs</span>
-                <span class="match-away">${m.away}</span>
-                <span class="match-leg">(${m.leg})</span>
-              </div>
-              <div class="match-line-score">
-                <span class="match-score">${scoreText}</span>
-                <span class="match-status">${statusLabel}</span>
-              </div>
-            `;
-            wrapper.appendChild(row);
-          });
-
-          container.appendChild(wrapper);
-        }
-      });
-    }
-
-    function renderStandings() {
-      ['A','B'].forEach(pool => {
-        const container = document.getElementById('standings-' + pool);
-        if (!container) return;
-
-        const teams = Object.values(standings[pool]);
-        if (teams.length === 0) {
-          container.innerHTML = '<p>En attente des premiers résultats.</p>';
-          return;
-        }
-
-        teams.sort((a, b) => {
-          if (b.Pts !== a.Pts) return b.Pts - a.Pts;
-          if (b.Diff !== a.Diff) return b.Diff - a.Diff;
-          if (b.BP !== a.BP) return b.BP - a.BP;
-          return a.team.localeCompare(b.team);
-        });
-
-        let html = `
-          <h3>Poule ${pool}</h3>
-          <table class="standings-table">
-            <thead>
-              <tr>
-                <th>#</th><th>Équipe</th><th>PJ</th><th>V</th><th>N</th><th>D</th><th>BP</th><th>BC</th><th>Diff</th><th>Pts</th>
-              </tr>
-            </thead>
-            <tbody>
-        `;
-
-        teams.forEach((t, idx) => {
-          html += `
-            <tr>
-              <td>${idx + 1}</td>
-              <td>${t.team}</td>
-              <td>${t.PJ}</td>
-              <td>${t.V}</td>
-              <td>${t.N}</td>
-              <td>${t.D}</td>
-              <td>${t.BP}</td>
-              <td>${t.BC}</td>
-              <td>${t.Diff}</td>
-              <td>${t.Pts}</td>
-            </tr>
+          row.innerHTML = `
+            <div class="match-teams-line">
+              <span class="team-home">${m.home}</span>
+              <span style="color:rgba(255,255,255,.3)">vs</span>
+              <span class="team-away">${m.away}</span>
+              <span class="match-leg-lbl">(${m.leg === 1 ? 'Aller' : 'Retour'})</span>
+            </div>
+            <div class="match-score-line">
+              ${hasScore
+                ? `<span class="score-val">${sc.home_score} <span class="score-dash">:</span> ${sc.away_score}</span>`
+                : `<span class="score-val" style="color:rgba(255,255,255,.25)">- : -</span>`
+              }
+              ${isLive ? '<span class="live-dot"></span>' : ''}
+              <span class="status-badge ${sc.status || 'scheduled'}">${statusLabel}</span>
+            </div>
           `;
+          wrap.appendChild(row);
         });
 
-        html += '</tbody></table>';
-        container.innerHTML = html;
+        container.appendChild(wrap);
       });
-    }
+    });
+  }
 
-    function renderScorers(scorers) {
-      const container = document.getElementById('scorers-list');
-      if (!container) return;
+  // ─── Classement ───────────────────────────────────────────────
+  function renderStandings(standings) {
+    ['A','B'].forEach(pool => {
+      const container = document.getElementById('standings-' + pool);
+      const rows = standings.filter(r => TEAMS[r.team_id]?.pool === pool);
 
-      if (!scorers || scorers.length === 0) {
-        container.innerHTML = '<p>Aucun buteur enregistré pour le moment.</p>';
+      if (rows.length === 0) {
+        container.innerHTML = '<p style="color:rgba(255,255,255,.35);font-size:13px">En attente des résultats.</p>';
         return;
       }
 
-      let html = '<ol class="scorers-table">';
-      scorers.forEach(sc => {
-        html += `
-          <li class="scorer-item">
-            <span class="scorer-name">${sc.name}</span>
-            <span class="scorer-team">${sc.team}</span>
-            <span class="scorer-goals">${sc.goals} but${sc.goals > 1 ? 's' : ''}</span>
-          </li>
-        `;
+      let html = `
+        <table class="standings-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Équipe</th><th>PJ</th><th>V</th><th>N</th><th>D</th>
+              <th>BP</th><th>BC</th><th>Diff</th><th>Pts</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      rows.forEach((r, i) => {
+        const team = TEAMS[r.team_id]?.name || '?';
+        html += `<tr>
+          <td>${i+1}</td>
+          <td>${team}</td>
+          <td>${r.played}</td>
+          <td>${r.won}</td>
+          <td>${r.drawn}</td>
+          <td>${r.lost}</td>
+          <td>${r.goals_for}</td>
+          <td>${r.goals_against}</td>
+          <td>${r.goal_diff}</td>
+          <td><strong>${r.points}</strong></td>
+        </tr>`;
       });
-      html += '</ol>';
-
+      html += '</tbody></table>';
       container.innerHTML = html;
+    });
+  }
+
+  // ─── Buteurs ──────────────────────────────────────────────────
+  function renderScorers(goals) {
+    const container = document.getElementById('scorers-wrap');
+    if (!goals.length) {
+      container.innerHTML = '<p style="color:rgba(255,255,255,.35);font-size:13px">Aucun but enregistré pour le moment.</p>';
+      return;
     }
 
-    loadPublicData();
-    setInterval(loadPublicData, 15000);
-  </script>
+    const agg = {};
+    goals.forEach(g => {
+      const pid = g.player_id;
+      if (!agg[pid]) agg[pid] = {
+        name:  g.players?.name || '?',
+        team:  TEAMS[g.players?.team_id]?.name || '?',
+        goals: 0
+      };
+      agg[pid].goals++;
+    });
+
+    const sorted = Object.values(agg).sort((a, b) => b.goals - a.goals);
+    let html = '<ol class="scorers-ol">';
+    sorted.forEach(sc => {
+      html += `
+        <li class="scorer-item">
+          <span class="scorer-lname">${sc.name}</span>
+          <span class="scorer-lteam">${sc.team}</span>
+          <span class="scorer-lgoals">${sc.goals} but${sc.goals > 1 ? 's' : ''}</span>
+        </li>
+      `;
+    });
+    html += '</ol>';
+    container.innerHTML = html;
+  }
+
+  loadAll();
+  setInterval(loadAll, 15000);
+</script>
 </body>
 </html>
