@@ -103,7 +103,7 @@
       background: rgba(255,255,255,.03);
       font-size: 13px;
       font-weight: 700;
-      letter-spacing: .08em;
+      letter-spacing: .08em;   position: relative; } #admin-access-btn {   position: absolute;   right: 16px;   bottom: 6px;   background: none;   border: none;   color: rgba(255,255,255,.07);   font-size: 14px;   cursor: pointer;   padding: 4px 8px;   border-radius: 4px;   transition: color .4s;   line-height: 1; } #admin-access-btn:hover { color: rgba(255,255,255,.35); } #draw-controls-wrap { display: none; } body.admin-active #draw-controls-wrap { display: flex; } .draw-controls {
       text-transform: uppercase;
       transition: transform .2s ease, background .2s ease, border-color .2s ease;
     }
@@ -452,7 +452,7 @@
       border: 1px solid rgba(255,255,255,.12);
       font-size: 12px;
       font-weight: 800;
-      letter-spacing: .08em;
+      letter-spacing: .08em;   position: relative; } #admin-access-btn {   position: absolute;   right: 16px;   bottom: 6px;   background: none;   border: none;   color: rgba(255,255,255,.07);   font-size: 14px;   cursor: pointer;   padding: 4px 8px;   border-radius: 4px;   transition: color .4s;   line-height: 1; } #admin-access-btn:hover { color: rgba(255,255,255,.35); } #draw-controls-wrap { display: none; } body.admin-active #draw-controls-wrap { display: flex; } .draw-controls {
       text-transform: uppercase;
     }
 
@@ -786,7 +786,7 @@
       padding-top: 40px;
       color: rgba(255,255,255,.56);
       font-size: 13px;
-      letter-spacing: .08em;
+      letter-spacing: .08em;   position: relative; } #admin-access-btn {   position: absolute;   right: 16px;   bottom: 6px;   background: none;   border: none;   color: rgba(255,255,255,.07);   font-size: 14px;   cursor: pointer;   padding: 4px 8px;   border-radius: 4px;   transition: color .4s;   line-height: 1; } #admin-access-btn:hover { color: rgba(255,255,255,.35); } #draw-controls-wrap { display: none; } body.admin-active #draw-controls-wrap { display: flex; } .draw-controls {
       text-transform: uppercase;
     }
 
@@ -818,7 +818,7 @@
       border: 1px solid rgba(255,255,255,.12);
       font-size: 14px;
       font-weight: 600;
-      letter-spacing: .08em;
+      letter-spacing: .08em;   position: relative; } #admin-access-btn {   position: absolute;   right: 16px;   bottom: 6px;   background: none;   border: none;   color: rgba(255,255,255,.07);   font-size: 14px;   cursor: pointer;   padding: 4px 8px;   border-radius: 4px;   transition: color .4s;   line-height: 1; } #admin-access-btn:hover { color: rgba(255,255,255,.35); } #draw-controls-wrap { display: none; } body.admin-active #draw-controls-wrap { display: flex; } .draw-controls {
       color: rgba(255,255,255,.6);
       text-align: center;
     }
@@ -826,8 +826,8 @@
 
     /* Admin actif : cacher le message d'attente, montrer les contrôles */
     body.admin-active .draw-waiting { display: none !important; }
-    body.admin-active #draw-controls-public { display: none !important; }
-    body.admin-active #draw-controls-public { display: flex !important; }
+    body.admin-active #draw-controls-wrap { display: none !important; }
+    body.admin-active #draw-controls-wrap { display: flex !important; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 1080px) {
@@ -1331,7 +1331,7 @@
     </main>
 
     <footer class="footer">
-      Tournoi Romainville · European Night Edition
+      Tournoi Romainville · European Night Edition   <button id="admin-access-btn" onclick="document.getElementById('admin-login-overlay').style.display='flex'" title="Admin">&#9881;</button>
     </footer>
   </div>
 
