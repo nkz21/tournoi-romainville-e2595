@@ -212,7 +212,7 @@
         <div class="scorer-form">
           <div class="form-row">
             <div class="field">
-              abel>Match</label>
+              Match</l
               <select id="inp-match">
                 <option value="">-- Match --</option>
                 <optgroup label="Poule A">
@@ -234,7 +234,7 @@
               </select>
             </div>
             <div class="field">
-              abel>Équipe</label>
+              Équipe</l
               <select id="inp-team">
                 <option value="">-- Équipe --</option>
                 <option>Arsenal</option>
@@ -247,7 +247,7 @@
             </div>
           </div>
           <div class="field">
-            abel>Nom du buteur</label>
+            Nom du buteur</l
             <input type="text" id="inp-scorer" placeholder="Ex : Marvin" list="players-list" autocomplete="off" />
             <datalist id="players-list">
               <option value="Marvin"><option value="Killian"><option value="Maxime"><option value="Rodirgue"><option value="Koskas">
@@ -259,7 +259,7 @@
             </datalist>
           </div>
           <div class="field">
-            abel>Nombre de buts</label>
+            Nombre de buts</l
             <input type="number" id="inp-goals" value="1" min="1" max="20" />
           </div>
           <button class="btn-add" id="btn-add">+ Enregistrer le but</button>
@@ -330,7 +330,7 @@
     try {
       const data = await sb('/rest/v1/matches?select=id,home_score,away_score,status&order=order_index');
       data.forEach(m => { scores[m.id] = { home: m.home_score ?? '', away: m.away_score ?? '', status: m.status || 'pending' }; });
-    } catch(e) { console.warn('Supabase offline, mode local'); }
+    } catch(e) { console.warn('Supabase offline, mode local'); renderMatches(); }
     renderMatches();
   }
 
