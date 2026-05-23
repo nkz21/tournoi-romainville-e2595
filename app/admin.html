@@ -460,6 +460,198 @@
     alert('❌ Erreur : ' + e.message);
   }
 }
+
+  // ══ FINAL 4 ══
+let drawTeams = [];     // les 4 équipes qualifiées { id, name }
+let drawnSF = null;     // résultat du tirage
+
+async function loadDraw() {
+  try {
+    // 1er de chaque poule
+    const standings = await sb(
+      '/rest/v1/standings?select=points,won,goals_for,goal_diff,team:teams(id,name,slug)&order=points.desc,goal_diff.desc,goals_for.desc',
+      'GET'
+    );
+    const groups = await sb('/rest/v1/groups?select=id,name', 'GET');
+
+    let qualified = [];
+    ['A','B'].forEach(poolName => {
+      const gId = groups.find(g => g.name === poolName || g.name === 'Poule ' + poolName)?.id;
+      // Filtre standings par group via matches... on prend le 1er de chaque poule depuis standings filtrés
+    });
+
+    // Récupère directement les top 1 de chaque poule
+    const sA = await sb(
+      '/rest/v1/standings?select=team:teams(id,name,slug),points,goal_diff,goals_for' +
+      '&group_id=eq.aaaaaaaa-0000-0000-0000-000000000001' +
+      '&order=points.desc,goal_diff.desc,goals_for.desc&limit=1',
+      'GET'
+    );
+    const sB = await sb(
+      '/rest/v1/standings?select=team:teams(id,name,slug),points,goal_diff,goals_for' +
+      '&group_id=eq.aaaaaaaa-0000-0000-0000-000000000002' +
+      '&order=points.desc,goal_diff.desc,goals_for.desc&limit=1',
+      'GET'
+    );
+
+    drawTeams = [];
+    if (sA[0]) drawTeams.push({ id: sA[0].team.id, name: sA[0].team.name });
+    if (sB[0]) drawTeams.push({ id: sB[0].team.id, name: sB[0].team.name });
+
+    // Vainqueurs barrages (matches avec stage='barrage' ou on les ajoute manuellement)
+    // Pour l'instant : champs texte pour saisir les 2 vainqueurs barrages
+    const container = document.getElementById('draw-qualified');
+    container.innerHTML = `
+      <div style="color:rgba(255,255,255,.8);font-size:14px;font-weight:700;width:100%;margin-bottom:8px;">
+        Équipes qualifiées automatiquement (1ers de poule) :
+      </div>
+      ${drawTeams.map(t => `
+        <div style="padding:10px 18px;border-radius:12px;background:rgba(127,92,255,.2);border:1px solid rgba(173,153,255,.5);font-weight:700;">
+          🏆 ${t.name}
+        </div>`).join('')}
+      <div style="color:rgba(255,255,255,.8);font-size:14px;font-weight:700;width:100%;margin:12px 0 8px;">
+        Vainqueurs barrages (saisie manuelle) :
+      </div>
+      <input id="barrage1-winner" placeholder="Vainqueur Barrage 1" style="
+        padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.2);
+        background:rgba(255,255,255,.07);color:white;font-size:15px;width:200px;
+      ">
+      <input id="barrage2-winner" placeholder="Vainqueur Barrage 2" style="
+        padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.2);
+        background:rgba(255,255,255,.07);color:white;font-size:15px;width:200px;
+      ">
+    `;
+
+    // Vérifie si tirage déjà fait
+    const f4 = await sb('/rest/v1/final4?select=*', 'GET');
+    if (f4[0]?.draw_done) {
+      const t = await sb('/rest/v1/teams?select=id,name', 'GET');
+      const byId = {};
+      t.forEach(x => byId[x.id] = x.name);
+      document.getElementById('draw-result').style.display = 'block';
+      document.getElementById('sf1-display').textContent =
+        `${byId[f4[0].sf1_home_id] || '?'} vs ${byId[f4[0].sf1_away_id] || '?'}`;
+      document.getElementById('sf2-display').textContent =
+        `${byId[f4[0].sf2_home_id] || '?'} vs ${byId[f4[0].sf2_away_id] || '?'}`;
+      document.getElementById('btn-draw').disabled = true;
+    }
+  } catch(e) { console.warn('loadDraw:', e); }
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function launchDraw() {
+  const b1 = document.getElementById('barrage1-winner')?.value?.trim();
+  const b2 = document.getElementById('barrage2-winner')?.value?.trim();
+
+  if (!b1 || !b2) {
+    alert('Saisis les 2 vainqueurs des barrages avant de tirer !');
+    return;
+  }
+
+  const allTeams = [
+    ...drawTeams,
+    { id: null, name: b1 },
+    { id: null, name: b2 }
+  ];
+
+  if (allTeams.length !== 4) {
+    alert('Il faut exactement 4 équipes qualifiées !');
+    return;
+  }
+
+  const btn = document.getElementById('btn-draw');
+  btn.disabled = true;
+
+  // Animation tirage
+  let frame = 0;
+  const sf1El = document.getElementById('sf1-display');
+  const sf2El = document.getElementById('sf2-display');
+  document.getElementById('draw-result').style.display = 'block';
+
+  const interval = setInterval(() => {
+    frame++;
+    const s = shuffle(allTeams);
+    sf1El.textContent = `${s[0].name} vs ${s[1].name}`;
+    sf2El.textContent = `${s[2].name} vs ${s[3].name}`;
+    sf1El.style.color = 'rgba(255,255,255,.4)';
+    sf2El.style.color = 'rgba(255,255,255,.4)';
+
+    if (frame >= 30) {
+      clearInterval(interval);
+      drawnSF = shuffle(allTeams);
+      sf1El.textContent = `${drawnSF[0].name} vs ${drawnSF[1].name}`;
+      sf2El.textContent = `${drawnSF[2].name} vs ${drawnSF[3].name}`;
+      sf1El.style.color = '#fff';
+      sf2El.style.color = '#fff';
+    }
+  }, 80);
+}
+
+async function saveDraw() {
+  if (!drawnSF) return;
+
+  // Récupère les IDs des vainqueurs barrages si possible
+  const allTeams = await sb('/rest/v1/teams?select=id,name', 'GET');
+  const byName = {};
+  allTeams.forEach(t => byName[t.name.toLowerCase()] = t.id);
+
+  const getId = (t) => t.id || byName[t.name.toLowerCase()] || null;
+
+  const payload = {
+    sf1_home_id: getId(drawnSF[0]),
+    sf1_away_id: getId(drawnSF[1]),
+    sf2_home_id: getId(drawnSF[2]),
+    sf2_away_id: getId(drawnSF[3]),
+    sf1_home_name: drawnSF[0].name,
+    sf1_away_name: drawnSF[1].name,
+    sf2_home_name: drawnSF[2].name,
+    sf2_away_name: drawnSF[3].name,
+    draw_done: true,
+    updated_at: new Date().toISOString()
+  };
+
+  try {
+    const existing = await sb('/rest/v1/final4?select=id', 'GET');
+    if (existing[0]) {
+      await sb(`/rest/v1/final4?id=eq.${existing[0].id}`, 'PATCH', payload);
+    } else {
+      await sb('/rest/v1/final4', 'POST', payload);
+    }
+    alert('✅ Tirage publié ! Visible sur index.html');
+  } catch(e) {
+    alert('❌ Erreur sauvegarde : ' + e.message);
+  }
+}
+
+async function resetDraw() {
+  if (!confirm('Réinitialiser le tirage ?')) return;
+  try {
+    const existing = await sb('/rest/v1/final4?select=id', 'GET');
+    if (existing[0]) {
+      await sb(`/rest/v1/final4?id=eq.${existing[0].id}`, 'PATCH', {
+        sf1_home_id: null, sf1_away_id: null,
+        sf2_home_id: null, sf2_away_id: null,
+        draw_done: false
+      });
+    }
+    drawnSF = null;
+    document.getElementById('draw-result').style.display = 'none';
+    document.getElementById('btn-draw').disabled = false;
+    alert('✅ Tirage réinitialisé');
+  } catch(e) { alert('Erreur : ' + e.message); }
+}
+
+// Charge le tirage au démarrage
+loadDraw();
+  
   
   // ─── Enregistrer un but ───────────────────────────────────────
   document.getElementById('btn-add').addEventListener('click', async () => {
