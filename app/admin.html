@@ -22,15 +22,18 @@
     .btn.red:hover{background:rgba(255,124,152,.1)}
 
     .shell{max-width:1200px;margin:0 auto;padding:32px 24px 80px}
-    .page-header{margin-bottom:36px}
+    .page-header{margin-bottom:24px}
     .page-header h1{font-family:'Oswald',sans-serif;font-size:clamp(2rem,5vw,3.2rem);text-transform:uppercase;letter-spacing:.02em;line-height:.95;margin-bottom:6px}
     .page-header p{color:rgba(255,255,255,.45);font-size:14px}
 
-    .two-col{display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
+    .btn-reset-all{display:inline-flex;align-items:center;gap:8px;margin-bottom:28px;padding:12px 28px;border-radius:999px;background:rgba(255,60,60,.15);border:1px solid rgba(255,100,100,.4);color:#ff9090;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background .2s,border-color .2s}
+    .btn-reset-all:hover{background:rgba(255,60,60,.28);border-color:rgba(255,100,100,.7)}
+
+    .two-col{display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start}
     @media(max-width:960px){.two-col{grid-template-columns:1fr}}
 
     .card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:22px;margin-bottom:20px}
-    .card-title{font-family:'Oswald',sans-serif;font-size:1.15rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+    .card-title{font-family:'Oswald',sans-serif;font-size:1.15rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
     .badge{font-size:10px;font-family:'Inter',sans-serif;padding:3px 10px;border-radius:999px;background:rgba(127,92,255,.2);border:1px solid rgba(127,92,255,.35);color:#b8a4ff;letter-spacing:.1em;font-weight:700}
 
     .match-block{display:flex;flex-direction:column;gap:2px;margin-bottom:14px}
@@ -53,6 +56,7 @@
     .btn-save.saved{background:rgba(113,240,168,.25);border-color:rgba(113,240,168,.7)}
     .divider{height:1px;background:rgba(255,255,255,.08);margin:18px 0}
 
+    /* ── SIDEBAR ── */
     .scorer-form{display:flex;flex-direction:column;gap:12px}
     .field{display:flex;flex-direction:column;gap:6px}
     .field label{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.45)}
@@ -63,20 +67,45 @@
     .btn-add{width:100%;min-height:44px;border-radius:12px;border:1px solid rgba(127,92,255,.5);background:rgba(127,92,255,.2);font-family:'Oswald',sans-serif;font-size:1rem;letter-spacing:.12em;text-transform:uppercase;color:white;cursor:pointer;transition:background .2s,transform .15s}
     .btn-add:hover{background:rgba(127,92,255,.4);transform:translateY(-1px)}
 
+    /* ── BUTEURS ── */
     .scorers-list{display:flex;flex-direction:column;gap:8px;margin-top:4px}
-    .scorer-row{display:grid;grid-template-columns:32px 1fr auto auto;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+    .scorer-row{display:grid;grid-template-columns:32px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
     .scorer-rank{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-family:'Oswald',sans-serif;font-size:.95rem;background:rgba(127,92,255,.18);border:1px solid rgba(127,92,255,.35)}
     .scorer-info{min-width:0}
     .scorer-name{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .scorer-team{font-size:12px;color:rgba(255,255,255,.45);margin-top:1px}
-    .goals-ctrl{display:flex;align-items:center;gap:6px}
-    .g-btn{width:26px;height:26px;border-radius:7px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#f5f7ff;font-size:.9rem;cursor:pointer;display:grid;place-items:center;transition:background .2s}
-    .g-btn:hover{background:rgba(255,255,255,.15)}
     .g-count{font-family:'Oswald',sans-serif;font-size:1.4rem;min-width:28px;text-align:center}
-    .btn-del{padding:5px 10px;border-radius:8px;border:1px solid rgba(255,124,152,.25);background:none;font-size:11px;font-weight:700;color:#ff7c98;cursor:pointer;transition:background .2s}
-    .btn-del:hover{background:rgba(255,124,152,.12)}
     .empty-msg{color:rgba(255,255,255,.3);font-size:13px;text-align:center;padding:16px 0}
 
+    /* ── FINAL 4 ── */
+    .final4-card{background:linear-gradient(135deg,rgba(127,92,255,.12),rgba(58,53,212,.18));border:1px solid rgba(173,153,255,.3);border-radius:20px;padding:22px;margin-bottom:20px}
+    .qualified-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}
+    .q-chip{padding:10px 16px;border-radius:12px;background:rgba(127,92,255,.2);border:1px solid rgba(173,153,255,.45);font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px}
+    .q-chip-placeholder{padding:10px 16px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);font-size:13px;color:rgba(255,255,255,.35);font-style:italic}
+    .barrage-inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+    .draw-result{display:none;margin-bottom:18px;display:none}
+    .draw-result.show{display:block}
+    .sf-box{padding:14px 18px;border-radius:14px;background:rgba(127,92,255,.15);border:1px solid rgba(173,153,255,.4);margin-bottom:10px}
+    .sf-label{font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:6px}
+    .sf-teams{font-family:'Oswald',sans-serif;font-size:1.35rem;text-transform:uppercase;letter-spacing:.04em}
+    .sf-score-row{display:flex;align-items:center;gap:10px;margin-top:10px}
+    .sf-score-row label{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);white-space:nowrap}
+    .sf-score-in{width:48px;padding:7px 8px;border-radius:9px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);color:#f5f7ff;font-family:'Oswald',sans-serif;font-size:1.1rem;text-align:center;outline:none}
+    .sf-score-in:focus{border-color:rgba(173,153,255,.7)}
+    .sf-sep{color:rgba(255,255,255,.3);font-size:1rem}
+    .draw-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+    .btn-draw{flex:1;min-height:44px;border-radius:12px;border:1px solid rgba(173,153,255,.5);background:rgba(127,92,255,.25);font-family:'Oswald',sans-serif;font-size:1rem;letter-spacing:.12em;text-transform:uppercase;color:white;cursor:pointer;transition:background .2s,transform .15s}
+    .btn-draw:hover:not(:disabled){background:rgba(127,92,255,.5);transform:translateY(-1px)}
+    .btn-draw:disabled{opacity:.4;cursor:not-allowed}
+    .btn-publish{flex:1;min-height:44px;border-radius:12px;border:1px solid rgba(113,240,168,.4);background:rgba(113,240,168,.1);font-family:'Oswald',sans-serif;font-size:1rem;letter-spacing:.12em;text-transform:uppercase;color:#71f0a8;cursor:pointer;transition:background .2s,transform .15s}
+    .btn-publish:hover:not(:disabled){background:rgba(113,240,168,.25);transform:translateY(-1px)}
+    .btn-publish:disabled{opacity:.4;cursor:not-allowed}
+    .btn-del{min-height:36px;padding:8px 16px;border-radius:10px;border:1px solid rgba(255,124,152,.25);background:none;font-size:11px;font-weight:700;color:#ff7c98;cursor:pointer;transition:background .2s}
+    .btn-del:hover{background:rgba(255,124,152,.12)}
+    .btn-sf-save{min-height:36px;padding:8px 14px;border-radius:10px;border:1px solid rgba(113,240,168,.4);background:rgba(113,240,168,.08);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#71f0a8;cursor:pointer;transition:background .2s}
+    .btn-sf-save:hover{background:rgba(113,240,168,.2)}
+
+    /* ── TOAST ── */
     #toast{position:fixed;bottom:24px;right:24px;z-index:999;padding:12px 20px;border-radius:14px;background:rgba(16,20,60,.97);border:1px solid rgba(255,255,255,.15);box-shadow:0 8px 40px rgba(0,0,0,.5);font-size:13px;font-weight:700;opacity:0;transform:translateY(12px);transition:opacity .25s,transform .25s;pointer-events:none;min-width:220px}
     #toast.show{opacity:1;transform:translateY(0);pointer-events:auto}
     #toast.ok{border-color:rgba(113,240,168,.4)}
@@ -85,19 +114,6 @@
 </head>
 <body>
 
-<button 
-  onclick="resetAll()" 
-  style="
-    margin: 20px auto; display: block;
-    padding: 14px 32px; border-radius: 999px;
-    background: rgba(255,60,60,.2); border: 1px solid rgba(255,100,100,.5);
-    color: white; font-weight: 800; font-size: 14px;
-    letter-spacing: .12em; text-transform: uppercase;
-    cursor: pointer;
-  ">
-  🗑️ Reset tout (scores + buts + classement)
-</button>
-  
 <div class="topbar">
   <div class="brand">
     <div class="brand-dot"></div>
@@ -115,7 +131,11 @@
     <p>Scores · Statuts · Buteurs — tout se met à jour en direct sur le site public.</p>
   </div>
 
+  <!-- Bouton reset bien placé dans le shell -->
+  <button class="btn-reset-all" onclick="resetAll()">🗑️ Reset tout (scores + buts + classement)</button>
+
   <div class="two-col">
+    <!-- ══════════ COLONNE GAUCHE ══════════ -->
     <div>
       <div class="card">
         <div class="card-title">Poule A <span class="badge">PSG · Arsenal · Barcelone</span></div>
@@ -127,7 +147,9 @@
       </div>
     </div>
 
+    <!-- ══════════ COLONNE DROITE ══════════ -->
     <div>
+      <!-- Ajouter un but -->
       <div class="card">
         <div class="card-title">Ajouter un but</div>
         <div class="scorer-form">
@@ -149,10 +171,64 @@
         </div>
       </div>
 
+      <!-- Classement buteurs -->
       <div class="card">
         <div class="card-title">Classement buteurs</div>
         <div class="scorers-list" id="scorers-list">
           <div class="empty-msg" id="empty-scorers">Aucun but enregistré.</div>
+        </div>
+      </div>
+
+      <!-- ══ FINAL 4 ══ -->
+      <div class="final4-card">
+        <div class="card-title">🎲 Final 4 — Tirage au sort</div>
+
+        <!-- Équipes qualifiées automatiques + saisie barrages -->
+        <div id="draw-qualified" style="margin-bottom:16px">
+          <div class="empty-msg">Chargement des qualifiés…</div>
+        </div>
+
+        <div class="barrage-inputs" id="barrage-inputs">
+          <div class="field">
+            <label>Vainqueur Barrage 1</label>
+            <input id="barrage1-winner" placeholder="ex: Arsenal" autocomplete="off">
+          </div>
+          <div class="field">
+            <label>Vainqueur Barrage 2</label>
+            <input id="barrage2-winner" placeholder="ex: Bayern" autocomplete="off">
+          </div>
+        </div>
+
+        <!-- Résultat du tirage -->
+        <div class="draw-result" id="draw-result">
+          <div class="sf-box">
+            <div class="sf-label">🟣 Demi-finale 1</div>
+            <div class="sf-teams" id="sf1-display">vs</div>
+            <div class="sf-score-row">
+              <label>Score</label>
+              <input class="sf-score-in" id="sf1-home-score" type="number" min="0" max="99" placeholder="-">
+              <span class="sf-sep">–</span>
+              <input class="sf-score-in" id="sf1-away-score" type="number" min="0" max="99" placeholder="-">
+              <button class="btn-sf-save" onclick="saveSFScore(1)">Sauver</button>
+            </div>
+          </div>
+          <div class="sf-box">
+            <div class="sf-label">🟣 Demi-finale 2</div>
+            <div class="sf-teams" id="sf2-display">vs</div>
+            <div class="sf-score-row">
+              <label>Score</label>
+              <input class="sf-score-in" id="sf2-home-score" type="number" min="0" max="99" placeholder="-">
+              <span class="sf-sep">–</span>
+              <input class="sf-score-in" id="sf2-away-score" type="number" min="0" max="99" placeholder="-">
+              <button class="btn-sf-save" onclick="saveSFScore(2)">Sauver</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="draw-btns">
+          <button class="btn-draw" id="btn-draw" onclick="launchDraw()">🎲 Lancer le tirage</button>
+          <button class="btn-publish" id="btn-publish" onclick="saveDraw()" disabled>💾 Publier</button>
+          <button class="btn-del" onclick="resetDraw()">↺ Reset</button>
         </div>
       </div>
     </div>
@@ -162,10 +238,10 @@
 <div id="toast"></div>
 
 <script>
-  if (sessionStorage.getItem('tr_admin') !== '1') window.location.href = 'login.html';
+  if (sessionStorage.getItem('tr_admin') !== '1') window.location.href = 'index.html';
   document.getElementById('btn-logout').addEventListener('click', () => {
     sessionStorage.removeItem('tr_admin');
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
   });
 
   const SB_URL = 'https://afqmjyxgkwipiagejxsw.supabase.co';
@@ -178,7 +254,7 @@
         'Content-Type': 'application/json',
         'apikey': SB_KEY,
         'Authorization': 'Bearer ' + SB_KEY,
-        'Prefer': method === 'POST' ? 'return=representation' : 'return=representation'
+        'Prefer': 'return=representation'
       },
       body: body ? JSON.stringify(body) : null
     });
@@ -194,7 +270,7 @@
     t._t = setTimeout(() => t.className = '', 3000);
   }
 
-  // ─── Données réelles de la BDD ───────────────────────────────
+  /* ─── DONNÉES ─── */
   const TEAMS = {
     'bbbbbbbb-0000-0000-0000-000000000001': { name: 'PSG',         pool: 'A' },
     'bbbbbbbb-0000-0000-0000-000000000002': { name: 'Arsenal',     pool: 'A' },
@@ -222,24 +298,21 @@
   let scores = {};
   let players = [];
 
-  // ─── Chargement initial ──────────────────────────────────────
+  /* ─── INIT ─── */
   async function init() {
     await Promise.all([loadMatches(), loadPlayers()]);
     renderMatches();
     renderScorers();
+    loadDraw();
   }
 
   async function loadMatches() {
     try {
       const data = await sb('/rest/v1/matches?select=id,home_score,away_score,status&order=created_at');
       data.forEach(m => {
-        scores[m.id] = {
-          home:   m.home_score ?? '',
-          away:   m.away_score ?? '',
-          status: m.status || 'scheduled'
-        };
+        scores[m.id] = { home: m.home_score ?? '', away: m.away_score ?? '', status: m.status || 'scheduled' };
       });
-    } catch(e) { console.warn('Impossible de charger les matchs', e); }
+    } catch(e) { console.warn('loadMatches:', e); }
   }
 
   async function loadPlayers() {
@@ -247,22 +320,19 @@
       players = await sb('/rest/v1/players?select=id,name,team_id&order=name');
       populatePlayerSelect();
       populateMatchSelect();
-    } catch(e) { console.warn('Impossible de charger les joueurs', e); }
+    } catch(e) { console.warn('loadPlayers:', e); }
   }
 
   function populateMatchSelect() {
     const sel = document.getElementById('inp-match');
     sel.innerHTML = '<option value="">-- Match --</option>';
-    const grpA = document.createElement('optgroup');
-    grpA.label = 'Poule A';
-    const grpB = document.createElement('optgroup');
-    grpB.label = 'Poule B';
+    const grpA = document.createElement('optgroup'); grpA.label = 'Poule A';
+    const grpB = document.createElement('optgroup'); grpB.label = 'Poule B';
     Object.entries(MATCHES_META).forEach(([id, m]) => {
       const opt = document.createElement('option');
       opt.value = id;
       opt.textContent = m.home + ' vs ' + m.away + ' (' + (m.leg === 1 ? 'Aller' : 'Retour') + ')';
-      if (m.pool === 'A') grpA.appendChild(opt);
-      else grpB.appendChild(opt);
+      (m.pool === 'A' ? grpA : grpB).appendChild(opt);
     });
     sel.appendChild(grpA);
     sel.appendChild(grpB);
@@ -271,20 +341,16 @@
   function populatePlayerSelect(filterTeamIds = null) {
     const sel = document.getElementById('inp-player');
     sel.innerHTML = '<option value="">-- Joueur --</option>';
-    const filtered = filterTeamIds
-      ? players.filter(p => filterTeamIds.includes(p.team_id))
-      : players;
-    filtered.forEach(p => {
+    const list = filterTeamIds ? players.filter(p => filterTeamIds.includes(p.team_id)) : players;
+    list.forEach(p => {
       const opt = document.createElement('option');
       opt.value = p.id;
-      const teamName = TEAMS[p.team_id]?.name || '';
-      opt.textContent = p.name + ' (' + teamName + ')';
+      opt.textContent = p.name + ' (' + (TEAMS[p.team_id]?.name || '?') + ')';
       opt.dataset.teamId = p.team_id;
       sel.appendChild(opt);
     });
   }
 
-  // Quand on choisit un match, filtrer les joueurs aux deux équipes
   document.getElementById('inp-match').addEventListener('change', function() {
     const meta = MATCHES_META[this.value];
     if (!meta) { populatePlayerSelect(); return; }
@@ -293,12 +359,13 @@
     populatePlayerSelect([homeId, awayId].filter(Boolean));
   });
 
-  // ─── Rendu des matchs ─────────────────────────────────────────
+  /* ─── RENDU MATCHS ─── */
   function renderMatches() {
     ['A','B'].forEach(pool => {
       const wrap = document.getElementById('matches-' + pool);
+      if (!wrap) return;
       wrap.innerHTML = '';
-      const list = Object.entries(MATCHES_META)
+      const grouped = Object.entries(MATCHES_META)
         .filter(([,m]) => m.pool === pool)
         .reduce((acc, [id, m]) => {
           const key = [m.home, m.away].sort().join('|');
@@ -307,7 +374,7 @@
           return acc;
         }, {});
 
-      Object.values(list).forEach((group, gi, arr) => {
+      Object.values(grouped).forEach((group, gi, arr) => {
         const block = document.createElement('div');
         block.className = 'match-block';
         const lbl = document.createElement('div');
@@ -316,8 +383,7 @@
         block.appendChild(lbl);
         group.forEach(m => block.appendChild(buildMatchRow(m)));
         if (gi < arr.length - 1) {
-          const div = document.createElement('div');
-          div.className = 'divider';
+          const div = document.createElement('div'); div.className = 'divider';
           block.appendChild(div);
         }
         wrap.appendChild(block);
@@ -333,350 +399,286 @@
     const teams = document.createElement('div');
     teams.className = 'match-teams';
     teams.innerHTML = m.home + ' <span>vs</span> ' + m.away +
-      ' <span style="font-size:.7rem;color:rgba(255,255,255,.25)">' +
-      (m.leg === 1 ? 'Aller' : 'Retour') + '</span>';
+      ' <span style="font-size:.7rem;color:rgba(255,255,255,.25)">' + (m.leg===1?'Aller':'Retour') + '</span>';
 
     const h = document.createElement('input');
-    h.type = 'number'; h.min = 0; h.max = 99;
-    h.className = 'score-in'; h.value = sc.home; h.placeholder = '-';
+    h.type='number'; h.min=0; h.max=99; h.className='score-in'; h.value=sc.home; h.placeholder='-';
 
     const sep = document.createElement('div');
-    sep.className = 'sep'; sep.textContent = '–';
+    sep.className='sep'; sep.textContent='–';
 
     const a = document.createElement('input');
-    a.type = 'number'; a.min = 0; a.max = 99;
-    a.className = 'score-in'; a.value = sc.away; a.placeholder = '-';
+    a.type='number'; a.min=0; a.max=99; a.className='score-in'; a.value=sc.away; a.placeholder='-';
 
     const sel = document.createElement('select');
     sel.className = 'status-select ' + sc.status;
     [['scheduled','⬜ À jouer'],['live','🟡 En cours'],['done','✅ Terminé']].forEach(([v,t]) => {
       const opt = document.createElement('option');
-      opt.value = v; opt.textContent = t;
-      if (v === sc.status) opt.selected = true;
+      opt.value=v; opt.textContent=t;
+      if (v===sc.status) opt.selected=true;
       sel.appendChild(opt);
     });
-    sel.addEventListener('change', () => {
-      sel.className = 'status-select ' + sel.value;
-    });
+    sel.addEventListener('change', () => { sel.className = 'status-select ' + sel.value; });
 
     const btn = document.createElement('button');
-    btn.className = 'btn-save'; btn.textContent = 'Sauvegarder';
+    btn.className='btn-save'; btn.textContent='Sauvegarder';
     btn.addEventListener('click', async () => {
-      const hv = h.value === '' ? null : parseInt(h.value, 10);
-      const av = a.value === '' ? null : parseInt(a.value, 10);
+      const hv = h.value==='' ? null : parseInt(h.value,10);
+      const av = a.value==='' ? null : parseInt(a.value,10);
       const st = sel.value;
-      scores[m.id] = { home: hv ?? '', away: av ?? '', status: st };
-      btn.textContent = '✓ Sauvé'; btn.classList.add('saved');
-      setTimeout(() => { btn.textContent = 'Sauvegarder'; btn.classList.remove('saved'); }, 2000);
+      scores[m.id] = { home:hv??'', away:av??'', status:st };
+      btn.textContent='✓ Sauvé'; btn.classList.add('saved');
+      setTimeout(() => { btn.textContent='Sauvegarder'; btn.classList.remove('saved'); }, 2000);
       try {
-        await sb('/rest/v1/matches?id=eq.' + m.id, 'PATCH', {
-          home_score: hv,
-          away_score: av,
-          status: st
-        });
+        await sb('/rest/v1/matches?id=eq.' + m.id, 'PATCH', { home_score:hv, away_score:av, status:st });
         toast('Score mis à jour ✓');
-      } catch(e) {
-        toast('Erreur Supabase : ' + e.message, 'err');
-      }
+      } catch(e) { toast('Erreur : ' + e.message, 'err'); }
     });
 
-    row.appendChild(teams);
-    row.appendChild(h);
-    row.appendChild(sep);
-    row.appendChild(a);
-    row.appendChild(sel);
-    row.appendChild(btn);
+    row.appendChild(teams); row.appendChild(h); row.appendChild(sep);
+    row.appendChild(a); row.appendChild(sel); row.appendChild(btn);
     return row;
   }
 
-  // ─── Buteurs depuis table goals ───────────────────────────────
+  /* ─── BUTEURS ─── */
   async function renderScorers() {
-    const list   = document.getElementById('scorers-list');
-    const empty  = document.getElementById('empty-scorers');
+    const list = document.getElementById('scorers-list');
+    const empty = document.getElementById('empty-scorers');
     list.querySelectorAll('.scorer-row').forEach(r => r.remove());
-
     try {
       const goals = await sb('/rest/v1/goals?select=player_id,players(name,team_id)&own_goal=eq.false');
       const agg = {};
       goals.forEach(g => {
         const pid = g.player_id;
-        if (!agg[pid]) agg[pid] = {
-          id:    pid,
-          name:  g.players?.name || '?',
-          team:  TEAMS[g.players?.team_id]?.name || '?',
-          goals: 0
-        };
+        if (!agg[pid]) agg[pid] = { id:pid, name:g.players?.name||'?', team:TEAMS[g.players?.team_id]?.name||'?', goals:0 };
         agg[pid].goals++;
       });
-
-      const sorted = Object.values(agg).sort((a, b) => b.goals - a.goals);
-      if (sorted.length === 0) { empty.style.display = 'block'; return; }
-      empty.style.display = 'none';
-
-      sorted.forEach((sc, i) => {
+      const sorted = Object.values(agg).sort((a,b) => b.goals-a.goals);
+      if (!sorted.length) { empty.style.display='block'; return; }
+      empty.style.display='none';
+      sorted.forEach((sc,i) => {
         const row = document.createElement('div');
-        row.className = 'scorer-row';
+        row.className='scorer-row';
         row.innerHTML = `
-          <div class="scorer-rank">${i + 1}</div>
+          <div class="scorer-rank">${i+1}</div>
           <div class="scorer-info">
             <div class="scorer-name">${sc.name}</div>
             <div class="scorer-team">${sc.team}</div>
           </div>
-          <div class="goals-ctrl">
-            <span class="g-count">${sc.goals} but${sc.goals > 1 ? 's' : ''}</span>
-          </div>
-        `;
+          <div class="g-count">${sc.goals}</div>`;
         list.appendChild(row);
       });
-    } catch(e) {
-      empty.textContent = 'Erreur chargement buteurs';
-      empty.style.display = 'block';
-    }
+    } catch(e) { empty.textContent='Erreur chargement buteurs'; empty.style.display='block'; }
   }
 
-  //________________ reset all_____________________________________________
+  /* ─── RESET ALL ─── */
   async function resetAll() {
-  if (!confirm('Remettre TOUT à zéro ? (classement + buts + scores)')) return;
-  try {
-    // 1. Remet tous les scores des matchs à null et status "scheduled"
-    await sb('/rest/v1/matches?id=neq.00000000-0000-0000-0000-000000000000', 'PATCH', {
-      home_score: null,
-      away_score: null,
-      status: 'scheduled'
-    });
-
-    // 2. Supprime tous les buts
-    await sb('/rest/v1/goals?id=neq.00000000-0000-0000-0000-000000000000', 'DELETE');
-
-    // 3. Remet le classement à zéro
-    await sb('/rest/v1/standings?id=neq.00000000-0000-0000-0000-000000000000', 'PATCH', {
-      played: 0, won: 0, drawn: 0, lost: 0,
-      goals_for: 0, goals_against: 0, points: 0
-    });
-
-    alert('✅ Tout remis à zéro !');
-    location.reload();
-  } catch(e) {
-    alert('❌ Erreur : ' + e.message);
-  }
-}
-
-  // ══ FINAL 4 ══
-let drawTeams = [];     // les 4 équipes qualifiées { id, name }
-let drawnSF = null;     // résultat du tirage
-
-async function loadDraw() {
-  try {
-    // 1er de chaque poule
-    const standings = await sb(
-      '/rest/v1/standings?select=points,won,goals_for,goal_diff,team:teams(id,name,slug)&order=points.desc,goal_diff.desc,goals_for.desc',
-      'GET'
-    );
-    const groups = await sb('/rest/v1/groups?select=id,name', 'GET');
-
-    let qualified = [];
-    ['A','B'].forEach(poolName => {
-      const gId = groups.find(g => g.name === poolName || g.name === 'Poule ' + poolName)?.id;
-      // Filtre standings par group via matches... on prend le 1er de chaque poule depuis standings filtrés
-    });
-
-    // Récupère directement les top 1 de chaque poule
-    const sA = await sb(
-      '/rest/v1/standings?select=team:teams(id,name,slug),points,goal_diff,goals_for' +
-      '&group_id=eq.aaaaaaaa-0000-0000-0000-000000000001' +
-      '&order=points.desc,goal_diff.desc,goals_for.desc&limit=1',
-      'GET'
-    );
-    const sB = await sb(
-      '/rest/v1/standings?select=team:teams(id,name,slug),points,goal_diff,goals_for' +
-      '&group_id=eq.aaaaaaaa-0000-0000-0000-000000000002' +
-      '&order=points.desc,goal_diff.desc,goals_for.desc&limit=1',
-      'GET'
-    );
-
-    drawTeams = [];
-    if (sA[0]) drawTeams.push({ id: sA[0].team.id, name: sA[0].team.name });
-    if (sB[0]) drawTeams.push({ id: sB[0].team.id, name: sB[0].team.name });
-
-    // Vainqueurs barrages (matches avec stage='barrage' ou on les ajoute manuellement)
-    // Pour l'instant : champs texte pour saisir les 2 vainqueurs barrages
-    const container = document.getElementById('draw-qualified');
-    container.innerHTML = `
-      <div style="color:rgba(255,255,255,.8);font-size:14px;font-weight:700;width:100%;margin-bottom:8px;">
-        Équipes qualifiées automatiquement (1ers de poule) :
-      </div>
-      ${drawTeams.map(t => `
-        <div style="padding:10px 18px;border-radius:12px;background:rgba(127,92,255,.2);border:1px solid rgba(173,153,255,.5);font-weight:700;">
-          🏆 ${t.name}
-        </div>`).join('')}
-      <div style="color:rgba(255,255,255,.8);font-size:14px;font-weight:700;width:100%;margin:12px 0 8px;">
-        Vainqueurs barrages (saisie manuelle) :
-      </div>
-      <input id="barrage1-winner" placeholder="Vainqueur Barrage 1" style="
-        padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.2);
-        background:rgba(255,255,255,.07);color:white;font-size:15px;width:200px;
-      ">
-      <input id="barrage2-winner" placeholder="Vainqueur Barrage 2" style="
-        padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.2);
-        background:rgba(255,255,255,.07);color:white;font-size:15px;width:200px;
-      ">
-    `;
-
-    // Vérifie si tirage déjà fait
-    const f4 = await sb('/rest/v1/final4?select=*', 'GET');
-    if (f4[0]?.draw_done) {
-      const t = await sb('/rest/v1/teams?select=id,name', 'GET');
-      const byId = {};
-      t.forEach(x => byId[x.id] = x.name);
-      document.getElementById('draw-result').style.display = 'block';
-      document.getElementById('sf1-display').textContent =
-        `${byId[f4[0].sf1_home_id] || '?'} vs ${byId[f4[0].sf1_away_id] || '?'}`;
-      document.getElementById('sf2-display').textContent =
-        `${byId[f4[0].sf2_home_id] || '?'} vs ${byId[f4[0].sf2_away_id] || '?'}`;
-      document.getElementById('btn-draw').disabled = true;
-    }
-  } catch(e) { console.warn('loadDraw:', e); }
-}
-
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length-1; i > 0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
-  }
-  return a;
-}
-
-function launchDraw() {
-  const b1 = document.getElementById('barrage1-winner')?.value?.trim();
-  const b2 = document.getElementById('barrage2-winner')?.value?.trim();
-
-  if (!b1 || !b2) {
-    alert('Saisis les 2 vainqueurs des barrages avant de tirer !');
-    return;
-  }
-
-  const allTeams = [
-    ...drawTeams,
-    { id: null, name: b1 },
-    { id: null, name: b2 }
-  ];
-
-  if (allTeams.length !== 4) {
-    alert('Il faut exactement 4 équipes qualifiées !');
-    return;
-  }
-
-  const btn = document.getElementById('btn-draw');
-  btn.disabled = true;
-
-  // Animation tirage
-  let frame = 0;
-  const sf1El = document.getElementById('sf1-display');
-  const sf2El = document.getElementById('sf2-display');
-  document.getElementById('draw-result').style.display = 'block';
-
-  const interval = setInterval(() => {
-    frame++;
-    const s = shuffle(allTeams);
-    sf1El.textContent = `${s[0].name} vs ${s[1].name}`;
-    sf2El.textContent = `${s[2].name} vs ${s[3].name}`;
-    sf1El.style.color = 'rgba(255,255,255,.4)';
-    sf2El.style.color = 'rgba(255,255,255,.4)';
-
-    if (frame >= 30) {
-      clearInterval(interval);
-      drawnSF = shuffle(allTeams);
-      sf1El.textContent = `${drawnSF[0].name} vs ${drawnSF[1].name}`;
-      sf2El.textContent = `${drawnSF[2].name} vs ${drawnSF[3].name}`;
-      sf1El.style.color = '#fff';
-      sf2El.style.color = '#fff';
-    }
-  }, 80);
-}
-
-async function saveDraw() {
-  if (!drawnSF) return;
-
-  // Récupère les IDs des vainqueurs barrages si possible
-  const allTeams = await sb('/rest/v1/teams?select=id,name', 'GET');
-  const byName = {};
-  allTeams.forEach(t => byName[t.name.toLowerCase()] = t.id);
-
-  const getId = (t) => t.id || byName[t.name.toLowerCase()] || null;
-
-  const payload = {
-    sf1_home_id: getId(drawnSF[0]),
-    sf1_away_id: getId(drawnSF[1]),
-    sf2_home_id: getId(drawnSF[2]),
-    sf2_away_id: getId(drawnSF[3]),
-    sf1_home_name: drawnSF[0].name,
-    sf1_away_name: drawnSF[1].name,
-    sf2_home_name: drawnSF[2].name,
-    sf2_away_name: drawnSF[3].name,
-    draw_done: true,
-    updated_at: new Date().toISOString()
-  };
-
-  try {
-    const existing = await sb('/rest/v1/final4?select=id', 'GET');
-    if (existing[0]) {
-      await sb(`/rest/v1/final4?id=eq.${existing[0].id}`, 'PATCH', payload);
-    } else {
-      await sb('/rest/v1/final4', 'POST', payload);
-    }
-    alert('✅ Tirage publié ! Visible sur index.html');
-  } catch(e) {
-    alert('❌ Erreur sauvegarde : ' + e.message);
-  }
-}
-
-async function resetDraw() {
-  if (!confirm('Réinitialiser le tirage ?')) return;
-  try {
-    const existing = await sb('/rest/v1/final4?select=id', 'GET');
-    if (existing[0]) {
-      await sb(`/rest/v1/final4?id=eq.${existing[0].id}`, 'PATCH', {
-        sf1_home_id: null, sf1_away_id: null,
-        sf2_home_id: null, sf2_away_id: null,
-        draw_done: false
+    if (!confirm('Remettre TOUT à zéro ? (classement + buts + scores)')) return;
+    try {
+      await sb('/rest/v1/matches?id=neq.00000000-0000-0000-0000-000000000000', 'PATCH', {
+        home_score: null, away_score: null, status: 'scheduled'
       });
-    }
-    drawnSF = null;
-    document.getElementById('draw-result').style.display = 'none';
-    document.getElementById('btn-draw').disabled = false;
-    alert('✅ Tirage réinitialisé');
-  } catch(e) { alert('Erreur : ' + e.message); }
-}
+      await sb('/rest/v1/goals?id=neq.00000000-0000-0000-0000-000000000000', 'DELETE');
+      await sb('/rest/v1/standings?id=neq.00000000-0000-0000-0000-000000000000', 'PATCH', {
+        played:0, won:0, drawn:0, lost:0,
+        goals_for:0, goals_against:0, goal_diff:0, points:0
+      });
+      toast('✅ Tout remis à zéro !');
+      setTimeout(() => location.reload(), 1200);
+    } catch(e) { toast('❌ Erreur : ' + e.message, 'err'); }
+  }
 
-// Charge le tirage au démarrage
-loadDraw();
-  
-  
-  // ─── Enregistrer un but ───────────────────────────────────────
-  document.getElementById('btn-add').addEventListener('click', async () => {
-    const matchId  = document.getElementById('inp-match').value;
-    const playerSel = document.getElementById('inp-player');
-    const playerId = playerSel.value;
-    const teamId   = playerSel.selectedOptions[0]?.dataset.teamId;
+  /* ─── FINAL 4 ─── */
+  let drawTeams = [];
+  let drawnSF = null;
+  let f4Id = null;
 
-    if (!matchId || !playerId) {
-      toast('Merci de choisir un match et un joueur', 'err');
-      return;
+  async function loadDraw() {
+    const container = document.getElementById('draw-qualified');
+    if (!container) return;
+    try {
+      const sA = await sb(
+        '/rest/v1/standings?select=team:teams(id,name,slug),points,goal_diff,goals_for' +
+        '&group_id=eq.aaaaaaaa-0000-0000-0000-000000000001' +
+        '&order=points.desc,goal_diff.desc,goals_for.desc&limit=1'
+      );
+      const sB = await sb(
+        '/rest/v1/standings?select=team:teams(id,name,slug),points,goal_diff,goals_for' +
+        '&group_id=eq.aaaaaaaa-0000-0000-0000-000000000002' +
+        '&order=points.desc,goal_diff.desc,goals_for.desc&limit=1'
+      );
+
+      drawTeams = [];
+      if (sA[0]?.team) drawTeams.push({ id: sA[0].team.id, name: sA[0].team.name });
+      if (sB[0]?.team) drawTeams.push({ id: sB[0].team.id, name: sB[0].team.name });
+
+      container.innerHTML = '<div style="font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:10px;">1ers de poule (auto)</div>';
+      if (drawTeams.length === 0) {
+        container.innerHTML += '<div class="q-chip-placeholder">Classements non encore calculés</div>';
+      } else {
+        drawTeams.forEach(t => {
+          container.innerHTML += `<div class="q-chip">🏆 ${t.name}</div>`;
+        });
+      }
+
+      // Tirage déjà fait ?
+      const f4 = await sb('/rest/v1/final4?select=*');
+      if (f4[0]) {
+        f4Id = f4[0].id;
+        if (f4[0].draw_done) {
+          document.getElementById('btn-draw').disabled = true;
+          document.getElementById('draw-result').classList.add('show');
+
+          const sf1HomeN = f4[0].sf1_home_name || '?';
+          const sf1AwayN = f4[0].sf1_away_name || '?';
+          const sf2HomeN = f4[0].sf2_home_name || '?';
+          const sf2AwayN = f4[0].sf2_away_name || '?';
+
+          document.getElementById('sf1-display').textContent = sf1HomeN + ' vs ' + sf1AwayN;
+          document.getElementById('sf2-display').textContent = sf2HomeN + ' vs ' + sf2AwayN;
+
+          if (f4[0].sf1_home_score != null) document.getElementById('sf1-home-score').value = f4[0].sf1_home_score;
+          if (f4[0].sf1_away_score != null) document.getElementById('sf1-away-score').value = f4[0].sf1_away_score;
+          if (f4[0].sf2_home_score != null) document.getElementById('sf2-home-score').value = f4[0].sf2_home_score;
+          if (f4[0].sf2_away_score != null) document.getElementById('sf2-away-score').value = f4[0].sf2_away_score;
+
+          if (f4[0].b1_winner) document.getElementById('barrage1-winner').value = f4[0].b1_winner;
+          if (f4[0].b2_winner) document.getElementById('barrage2-winner').value = f4[0].b2_winner;
+
+          document.getElementById('btn-publish').disabled = false;
+        }
+      }
+    } catch(e) {
+      container.innerHTML = '<div class="q-chip-placeholder">Erreur chargement (' + e.message + ')</div>';
     }
+  }
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i=a.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+    return a;
+  }
+
+  function launchDraw() {
+    const b1 = document.getElementById('barrage1-winner').value.trim();
+    const b2 = document.getElementById('barrage2-winner').value.trim();
+    if (!b1 || !b2) { toast('Saisis les 2 vainqueurs des barrages d\'abord !', 'err'); return; }
+
+    const allTeams = [...drawTeams, { id:null, name:b1 }, { id:null, name:b2 }];
+    if (allTeams.length !== 4) { toast('Il faut exactement 4 équipes !', 'err'); return; }
+
+    const btn = document.getElementById('btn-draw');
+    btn.disabled = true;
+    document.getElementById('draw-result').classList.add('show');
+
+    const sf1El = document.getElementById('sf1-display');
+    const sf2El = document.getElementById('sf2-display');
+    let frame = 0;
+
+    const interval = setInterval(() => {
+      frame++;
+      const s = shuffle(allTeams);
+      sf1El.textContent = s[0].name + ' vs ' + s[1].name;
+      sf2El.textContent = s[2].name + ' vs ' + s[3].name;
+      sf1El.style.opacity = '0.4';
+      sf2El.style.opacity = '0.4';
+      if (frame >= 30) {
+        clearInterval(interval);
+        drawnSF = shuffle(allTeams);
+        sf1El.textContent = drawnSF[0].name + ' vs ' + drawnSF[1].name;
+        sf2El.textContent = drawnSF[2].name + ' vs ' + drawnSF[3].name;
+        sf1El.style.opacity = '1';
+        sf2El.style.opacity = '1';
+        document.getElementById('btn-publish').disabled = false;
+        toast('Tirage effectué ! Clique Publier pour le rendre visible.', 'ok');
+      }
+    }, 80);
+  }
+
+  async function saveDraw() {
+    if (!drawnSF) { toast('Lance le tirage d\'abord !', 'err'); return; }
+    const allTeams = await sb('/rest/v1/teams?select=id,name');
+    const byName = {};
+    allTeams.forEach(t => byName[t.name.toLowerCase()] = t.id);
+    const getId = t => t.id || byName[(t.name||'').toLowerCase()] || null;
+
+    const payload = {
+      sf1_home_id: getId(drawnSF[0]), sf1_away_id: getId(drawnSF[1]),
+      sf2_home_id: getId(drawnSF[2]), sf2_away_id: getId(drawnSF[3]),
+      sf1_home_name: drawnSF[0].name, sf1_away_name: drawnSF[1].name,
+      sf2_home_name: drawnSF[2].name, sf2_away_name: drawnSF[3].name,
+      b1_winner: document.getElementById('barrage1-winner').value.trim(),
+      b2_winner: document.getElementById('barrage2-winner').value.trim(),
+      draw_done: true,
+      updated_at: new Date().toISOString()
+    };
 
     try {
-      await sb('/rest/v1/goals', 'POST', {
-        match_id:  matchId,
-        player_id: playerId,
-        team_id:   teamId || null,
-        own_goal:  false
-      });
+      if (f4Id) {
+        await sb('/rest/v1/final4?id=eq.' + f4Id, 'PATCH', payload);
+      } else {
+        const res = await sb('/rest/v1/final4', 'POST', payload);
+        if (res[0]) f4Id = res[0].id;
+      }
+      toast('✅ Tirage publié ! Visible sur le site public.');
+    } catch(e) { toast('❌ Erreur : ' + e.message, 'err'); }
+  }
+
+  async function saveSFScore(sfNum) {
+    const h = parseInt(document.getElementById('sf'+sfNum+'-home-score').value, 10);
+    const a = parseInt(document.getElementById('sf'+sfNum+'-away-score').value, 10);
+    if (isNaN(h) || isNaN(a)) { toast('Score invalide', 'err'); return; }
+
+    const payload = {};
+    payload['sf'+sfNum+'_home_score'] = h;
+    payload['sf'+sfNum+'_away_score'] = a;
+    payload['updated_at'] = new Date().toISOString();
+
+    try {
+      if (f4Id) {
+        await sb('/rest/v1/final4?id=eq.' + f4Id, 'PATCH', payload);
+        toast('Score SF' + sfNum + ' sauvegardé ✓');
+      } else {
+        toast('Publie le tirage d\'abord !', 'err');
+      }
+    } catch(e) { toast('Erreur : ' + e.message, 'err'); }
+  }
+
+  async function resetDraw() {
+    if (!confirm('Réinitialiser le tirage ?')) return;
+    try {
+      if (f4Id) {
+        await sb('/rest/v1/final4?id=eq.' + f4Id, 'PATCH', {
+          sf1_home_id:null, sf1_away_id:null, sf2_home_id:null, sf2_away_id:null,
+          sf1_home_name:null, sf1_away_name:null, sf2_home_name:null, sf2_away_name:null,
+          sf1_home_score:null, sf1_away_score:null, sf2_home_score:null, sf2_away_score:null,
+          draw_done: false, updated_at: new Date().toISOString()
+        });
+      }
+      drawnSF = null;
+      document.getElementById('draw-result').classList.remove('show');
+      document.getElementById('btn-draw').disabled = false;
+      document.getElementById('btn-publish').disabled = true;
+      document.getElementById('sf1-home-score').value = '';
+      document.getElementById('sf1-away-score').value = '';
+      document.getElementById('sf2-home-score').value = '';
+      document.getElementById('sf2-away-score').value = '';
+      toast('Tirage réinitialisé');
+    } catch(e) { toast('Erreur : ' + e.message, 'err'); }
+  }
+
+  /* ─── ENREGISTRER UN BUT ─── */
+  document.getElementById('btn-add').addEventListener('click', async () => {
+    const matchId = document.getElementById('inp-match').value;
+    const playerSel = document.getElementById('inp-player');
+    const playerId = playerSel.value;
+    const teamId = playerSel.selectedOptions[0]?.dataset.teamId;
+    if (!matchId || !playerId) { toast('Choisis un match et un joueur', 'err'); return; }
+    try {
+      await sb('/rest/v1/goals', 'POST', { match_id:matchId, player_id:playerId, team_id:teamId||null, own_goal:false });
       toast('But enregistré ✓');
       renderScorers();
-    } catch(e) {
-      toast('Erreur : ' + e.message, 'err');
-    }
+    } catch(e) { toast('Erreur : ' + e.message, 'err'); }
   });
 
   init();
