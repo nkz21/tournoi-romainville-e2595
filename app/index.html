@@ -1534,7 +1534,7 @@
                           try {
                                       const dr = await sbGet('/rest/v1/draw_result?id=eq.1&select=sf1_t1,sf1_t2,sf2_t1,sf2_t2');
                                       if (dr && dr.length > 0 && dr[0].sf1_t1 && !drawDone) {
-                                                    const d = dr[0], fn = n => TEAMS.find(t => t.name===n)||{name:n,img:''};
+                                                    const d = dr[0], nm={'Real Madrid':'Real','Man City':'City','Barcelona':'Barça','Barcelone':'Barça'}, fn = n => TEAMS.find(t => t.name===(nm[n]||n)||t.name===n)||{name:n,img:''};
                                                     ['sf1-slot1','sf1-slot2','sf2-slot1','sf2-slot2'].forEach((id,i) => renderSlot(id, fn([d.sf1_t1,d.sf1_t2,d.sf2_t1,d.sf2_t2][i])));
                                                     const dst = document.getElementById('draw-status');
                                                     dst.className = 'draw-status done';
@@ -1572,19 +1572,19 @@ const EVENT_START = '2026-05-24T10:00:00+02:00';
 const initialData = {
   teams: [
     { name: 'Arsenal', group_name: 'Poule A', players: ['Marvin', 'Killian', 'Maxime', 'Rodirgue', 'Koskas'] },
-    { name: 'Real Madrid', group_name: 'Poule A', players: ['Ryad', 'Salah', 'Yves', 'Bouthie', 'Alexandre'] },
+    { name: 'Real', group_name: 'Poule A', players: ['Ryad', 'Salah', 'Yves', 'Bouthie', 'Alexandre'] },
     { name: 'Barcelone', group_name: 'Poule A', players: ['Ali (Salah)', 'Sacha', 'Nassim', 'Abdel', 'Norredine'] },
     { name: 'PSG', group_name: 'Poule B', players: ['Adam', 'Iheb', 'Marwane', 'Steven', 'Slo'] },
     { name: 'Bayern', group_name: 'Poule B', players: ['Ali', 'Elio', 'Mor', 'Massi', 'So'] },
     { name: 'City', group_name: 'Poule B', players: ['Matteo', 'Simon', 'Mathys', 'Ian', 'Haroon'] }
   ],
   matches: [
-    { pool: 'Poule A', home: 'Arsenal', away: 'Real Madrid', leg: 'Aller', order_index: 1 },
-    { pool: 'Poule A', home: 'Real Madrid', away: 'Arsenal', leg: 'Retour', order_index: 2 },
+    { pool: 'Poule A', home: 'Arsenal', away: 'Real', leg: 'Aller', order_index: 1 },
+    { pool: 'Poule A', home: 'Real', away: 'Arsenal', leg: 'Retour', order_index: 2 },
     { pool: 'Poule A', home: 'Arsenal', away: 'Barcelone', leg: 'Aller', order_index: 3 },
     { pool: 'Poule A', home: 'Barcelone', away: 'Arsenal', leg: 'Retour', order_index: 4 },
-    { pool: 'Poule A', home: 'Real Madrid', away: 'Barcelone', leg: 'Aller', order_index: 5 },
-    { pool: 'Poule A', home: 'Barcelone', away: 'Real Madrid', leg: 'Retour', order_index: 6 },
+    { pool: 'Poule A', home: 'Real', away: 'Barcelone', leg: 'Aller', order_index: 5 },
+    { pool: 'Poule A', home: 'Barcelone', away: 'Real', leg: 'Retour', order_index: 6 },
     { pool: 'Poule B', home: 'PSG', away: 'Bayern', leg: 'Aller', order_index: 7 },
     { pool: 'Poule B', home: 'Bayern', away: 'PSG', leg: 'Retour', order_index: 8 },
     { pool: 'Poule B', home: 'PSG', away: 'City', leg: 'Aller', order_index: 9 },
