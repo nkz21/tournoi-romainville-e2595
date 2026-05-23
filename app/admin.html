@@ -332,6 +332,7 @@
       data.forEach(m => { scores[m.id] = { home: m.home_score ?? '', away: m.away_score ?? '', status: m.status || 'pending' }; });
     } catch(e) { console.warn('Supabase offline, mode local'); renderMatches(); }
     renderMatches();
+    renderStandings();
   }
 
   function renderMatches() {
@@ -414,6 +415,7 @@
       try {
         await sb('/rest/v1/matches?id=eq.' + m.id, 'PATCH', { home_score: hv, away_score: av, status: st });
         toast('Score mis à jour ✓');
+        renderStandings();
       } catch(e) { toast('Local OK — Supabase offline', 'err'); }
     });
 
