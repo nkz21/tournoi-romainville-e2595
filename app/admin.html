@@ -421,6 +421,33 @@
     }
   }
 
+  //________________ reset all_____________________________________________
+  async function resetAll() {
+  if (!confirm('Remettre TOUT à zéro ? (classement + buts + scores)')) return;
+  try {
+    // 1. Remet tous les scores des matchs à null et status "scheduled"
+    await sb('/rest/v1/matches?id=neq.00000000-0000-0000-0000-000000000000', 'PATCH', {
+      home_score: null,
+      away_score: null,
+      status: 'scheduled'
+    });
+
+    // 2. Supprime tous les buts
+    await sb('/rest/v1/goals?id=neq.00000000-0000-0000-0000-000000000000', 'DELETE');
+
+    // 3. Remet le classement à zéro
+    await sb('/rest/v1/standings?id=neq.00000000-0000-0000-0000-000000000000', 'PATCH', {
+      played: 0, won: 0, drawn: 0, lost: 0,
+      goals_for: 0, goals_against: 0, points: 0
+    });
+
+    alert('✅ Tout remis à zéro !');
+    location.reload();
+  } catch(e) {
+    alert('❌ Erreur : ' + e.message);
+  }
+}
+  
   // ─── Enregistrer un but ───────────────────────────────────────
   document.getElementById('btn-add').addEventListener('click', async () => {
     const matchId  = document.getElementById('inp-match').value;
