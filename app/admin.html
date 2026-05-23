@@ -4,9 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Back-office · Tournoi Romainville</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -18,7 +20,6 @@
       color: #f5f7ff;
     }
 
-    /* TOPBAR */
     .topbar {
       position: sticky; top: 0; z-index: 50;
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
@@ -35,24 +36,19 @@
     .btn.red { border-color: rgba(255,124,152,.3); color: #ff7c98; }
     .btn.red:hover { background: rgba(255,124,152,.1); }
 
-    /* SHELL */
     .shell { max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; }
 
-    /* HEADER */
     .page-header { margin-bottom: 36px; }
     .page-header h1 { font-family: 'Oswald', sans-serif; font-size: clamp(2rem,5vw,3.2rem); text-transform: uppercase; letter-spacing: .02em; line-height: .95; margin-bottom: 6px; }
     .page-header p { color: rgba(255,255,255,.45); font-size: 14px; }
 
-    /* DEUX COLONNES */
     .two-col { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
     @media(max-width:960px) { .two-col { grid-template-columns: 1fr; } }
 
-    /* CARD */
     .card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 20px; padding: 22px; margin-bottom: 20px; }
     .card-title { font-family: 'Oswald', sans-serif; font-size: 1.15rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
     .badge { font-size: 10px; font-family: 'Inter', sans-serif; padding: 3px 10px; border-radius: 999px; background: rgba(127,92,255,.2); border: 1px solid rgba(127,92,255,.35); color: #b8a4ff; letter-spacing: .1em; font-weight: 700; }
 
-    /* MATCH ROW */
     .match-block { display: flex; flex-direction: column; gap: 2px; margin-bottom: 14px; }
     .match-block:last-child { margin-bottom: 0; }
     .match-label { font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.35); padding: 0 4px; margin-bottom: 4px; }
@@ -80,7 +76,6 @@
     .score-in:focus { border-color: rgba(173,153,255,.7); background: rgba(255,255,255,.12); }
     .sep { color: rgba(255,255,255,.3); font-size: 1rem; text-align: center; }
 
-    /* STATUS SELECT */
     .status-select {
       width: 100%; padding: 8px 10px;
       border-radius: 10px; border: 1px solid rgba(255,255,255,.15);
@@ -95,7 +90,6 @@
     .status-select.live { border-color: rgba(240,213,113,.5); color: #f0d571; background: rgba(240,213,113,.08); }
     .status-select.done { border-color: rgba(113,240,168,.4); color: #71f0a8; background: rgba(113,240,168,.06); }
 
-    /* SAVE BTN */
     .btn-save {
       padding: 8px 14px; border-radius: 10px;
       border: 1px solid rgba(113,240,168,.4); background: rgba(113,240,168,.08);
@@ -106,10 +100,8 @@
     .btn-save:hover { background: rgba(113,240,168,.2); transform: translateY(-1px); }
     .btn-save.saved { background: rgba(113,240,168,.25); border-color: rgba(113,240,168,.7); }
 
-    /* DIVIDER */
     .divider { height: 1px; background: rgba(255,255,255,.08); margin: 18px 0; }
 
-    /* SCORER FORM */
     .scorer-form { display: flex; flex-direction: column; gap: 12px; }
     .field { display: flex; flex-direction: column; gap: 6px; }
     .field label { font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.45); }
@@ -131,7 +123,6 @@
     }
     .btn-add:hover { background: rgba(127,92,255,.4); transform: translateY(-1px); }
 
-    /* SCORERS LIST */
     .scorers-list { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
     .scorer-row {
       display: grid; grid-template-columns: 32px 1fr auto auto;
@@ -151,7 +142,6 @@
     .btn-del:hover { background: rgba(255,124,152,.12); }
     .empty-msg { color: rgba(255,255,255,.3); font-size: 13px; text-align: center; padding: 16px 0; }
 
-    /* TOAST */
     #toast {
       position: fixed; bottom: 24px; right: 24px; z-index: 999;
       padding: 12px 20px; border-radius: 14px;
@@ -175,7 +165,7 @@
     Tournoi Romainville &nbsp;<span style="color:rgba(255,255,255,.3);font-weight:400;font-size:11px">ADMIN</span>
   </div>
   <div class="topbar-right">
-    <a href="index.html" class="btn">← Site public</a>
+    <a href="index-1.html" class="btn">← Site public</a>
     <button class="btn red" id="btn-logout">Déconnexion</button>
   </div>
 </div>
@@ -187,32 +177,25 @@
   </div>
 
   <div class="two-col">
-
-    <!-- COLONNE GAUCHE : MATCHS -->
     <div>
-
-      <!-- POULE A -->
       <div class="card">
-              <div class="card-title">Poule A <span class="badge">Arsenal · Barça · PSG</span></div>
+        <div class="card-title">Poule A <span class="badge">Arsenal · Barça · PSG</span></div>
         <div id="matches-A"></div>
       </div>
 
-      <!-- POULE B -->
       <div class="card">
         <div class="card-title">Poule B <span class="badge">Real · City · Bayern</span></div>
         <div id="matches-B"></div>
       </div>
-
     </div>
 
-    <!-- COLONNE DROITE : BUTEURS -->
     <div>
       <div class="card">
         <div class="card-title">Ajouter un but</div>
         <div class="scorer-form">
           <div class="form-row">
             <div class="field">
-              <label>Match</label>
+              <label for="inp-match">Match</label>
               <select id="inp-match">
                 <option value="">-- Match --</option>
                 <optgroup label="Poule A">
@@ -234,7 +217,7 @@
               </select>
             </div>
             <div class="field">
-                            <label>Équipe</label>
+              <label for="inp-team">Équipe</label>
               <select id="inp-team">
                 <option value="">-- Équipe --</option>
                 <option>Arsenal</option>
@@ -247,19 +230,43 @@
             </div>
           </div>
           <div class="field">
-                          <label>Nom du buteur</label>
+            <label for="inp-scorer">Nom du buteur</label>
             <input type="text" id="inp-scorer" placeholder="Ex : Marvin" list="players-list" autocomplete="off" />
             <datalist id="players-list">
-              <option value="Marvin"><option value="Killian"><option value="Maxime"><option value="Rodirgue"><option value="Koskas">
-              <option value="Ali (Salah)"><option value="Sacha"><option value="Nassim"><option value="Abdel"><option value="Norredine">
-              <option value="Adam"><option value="Iheb"><option value="Marwane"><option value="Steven"><option value="Slo">
-              <option value="Ryad"><option value="Salah"><option value="Yves"><option value="Bouthie"><option value="Alexandre">
-              <option value="Matteo"><option value="Simon"><option value="Mathys"><option value="Ian"><option value="Haroon">
-              <option value="Ali"><option value="Elio"><option value="Mor"><option value="Massi"><option value="So">
+              <option value="Marvin"></option>
+              <option value="Killian"></option>
+              <option value="Maxime"></option>
+              <option value="Rodirgue"></option>
+              <option value="Koskas"></option>
+              <option value="Ali (Salah)"></option>
+              <option value="Sacha"></option>
+              <option value="Nassim"></option>
+              <option value="Abdel"></option>
+              <option value="Norredine"></option>
+              <option value="Adam"></option>
+              <option value="Iheb"></option>
+              <option value="Marwane"></option>
+              <option value="Steven"></option>
+              <option value="Slo"></option>
+              <option value="Ryad"></option>
+              <option value="Salah"></option>
+              <option value="Yves"></option>
+              <option value="Bouthie"></option>
+              <option value="Alexandre"></option>
+              <option value="Matteo"></option>
+              <option value="Simon"></option>
+              <option value="Mathys"></option>
+              <option value="Ian"></option>
+              <option value="Haroon"></option>
+              <option value="Ali"></option>
+              <option value="Elio"></option>
+              <option value="Mor"></option>
+              <option value="Massi"></option>
+              <option value="So"></option>
             </datalist>
           </div>
           <div class="field">
-                          <label>Nombre de buts</label>
+            <label for="inp-goals">Nombre de buts</label>
             <input type="number" id="inp-goals" value="1" min="1" max="20" />
           </div>
           <button class="btn-add" id="btn-add">+ Enregistrer le but</button>
@@ -273,70 +280,78 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
 
-  </div><!-- /two-col -->
-</div><!-- /shell -->
-
-<!-- SECTION TIRAGE -->   <div class="shell" style="padding-top:0">     <div class="card" id="card-final4" style="margin-top:0;border-color:rgba(127,92,255,.3);">       <div class="card-title">🎲 Final 4 — Tirage au sort <span class="badge" id="f4-badge">En attente des résultats</span></div>        <!-- CLASSEMENT QUALIFÉS -->       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px" id="standings-wrap">         <div>           <div style="font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px">Poule A</div>           <div id="standing-A"></div>         </div>         <div>           <div style="font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px">Poule B</div>           <div id="standing-B"></div>         </div>       </div>        <!-- BRACKET -->       <div id="bracket-wrap" style="display:none">         <div style="font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:14px">Résultat du tirage</div>         <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center">           <div id="semi1" style="background:rgba(127,92,255,.12);border:1px solid rgba(127,92,255,.35);border-radius:16px;padding:18px 20px">             <div style="font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px">🟣 Demi-finale 1</div>             <div id="s1t1" style="font-family:'Oswald',sans-serif;font-size:1.3rem;text-transform:uppercase;margin-bottom:8px">?</div>             <div style="font-size:11px;color:rgba(255,255,255,.3);margin:4px 0">vs</div>             <div id="s1t2" style="font-family:'Oswald',sans-serif;font-size:1.3rem;text-transform:uppercase">?</div>           </div>           <div style="font-size:1.5rem;color:rgba(255,255,255,.2)">&#9889;</div>           <div id="semi2" style="background:rgba(127,92,255,.12);border:1px solid rgba(127,92,255,.35);border-radius:16px;padding:18px 20px">             <div style="font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px">🟣 Demi-finale 2</div>             <div id="s2t1" style="font-family:'Oswald',sans-serif;font-size:1.3rem;text-transform:uppercase;margin-bottom:8px">?</div>             <div style="font-size:11px;color:rgba(255,255,255,.3);margin:4px 0">vs</div>             <div id="s2t2" style="font-family:'Oswald',sans-serif;font-size:1.3rem;text-transform:uppercase">?</div>           </div>         </div>       </div>        <!-- BOUTONS -->       <div style="display:flex;gap:12px;margin-top:22px;flex-wrap:wrap" id="draw-btns">         <button id="btn-draw" class="btn-add" style="flex:1;min-width:200px" disabled>🎲 Lancer le tirage au sort</button>         <button id="btn-reset-draw" class="btn-sm" style="display:none">&#8635; Réinitialiser</button>       </div>       <div id="draw-msg" style="margin-top:12px;font-size:13px;color:rgba(255,255,255,.4);text-align:center"></div>     </div>   </div>    <div id="toast"></div>
+<div id="toast"></div>
 
 <script>
-  // ── AUTH ──
   if (sessionStorage.getItem('tr_admin') !== '1') window.location.href = 'login.html';
+
   document.getElementById('btn-logout').addEventListener('click', () => {
     sessionStorage.removeItem('tr_admin');
     window.location.href = 'login.html';
   });
 
-  // ── CONFIG ──
   const SB_URL = 'https://afqmjyxgkwipiagejxsw.supabase.co';
-  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmcW1qeXhna3dpcGlhZ2VqeHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MjE5MzcsImV4cCI6MjA5NTA5NzkzN30.FNQ1P1DnSANFOE7oW9AkvhNrZq1N6unWZV8Phn3z9vg';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmcW1qeXhna3dpcGlhZ2VqeHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MjE5MzcsImV4cCI6MjA5NTA5NzkzN30.FNQ1P1DnSANFOE7OW9AkvhNrZq1N6unWZV8Phn3z9vg';
 
   async function sb(path, method = 'GET', body = null) {
     const r = await fetch(SB_URL + path, {
       method,
-      headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Prefer': 'return=representation' },
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_KEY,
+        'Prefer': method === 'POST'
+          ? 'return=representation,resolution=merge-duplicates'
+          : 'return=representation'
+      },
       body: body ? JSON.stringify(body) : null
     });
     if (!r.ok) throw new Error(await r.text());
     return r.status === 204 ? null : r.json();
   }
 
-  // ── TOAST ──
   function toast(msg, type = 'ok') {
     const t = document.getElementById('toast');
-    t.textContent = msg; t.className = 'show ' + type;
-    clearTimeout(t._t); t._t = setTimeout(() => t.className = '', 3000);
+    t.textContent = msg;
+    t.className = 'show ' + type;
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.className = '', 3000);
   }
 
-  // ── DONNÉES MATCHS ──
   const MATCHES = [
-    { id:'a1', pool:'A', home:'Arsenal',    away:'Barça',      leg:'Aller'  },
-    { id:'a2', pool:'A', home:'Barça',      away:'Arsenal',    leg:'Retour' },
-    { id:'a3', pool:'A', home:'Barça',      away:'PSG',        leg:'Aller'  },
-    { id:'a4', pool:'A', home:'PSG',        away:'Barça',      leg:'Retour' },
-    { id:'a5', pool:'A', home:'PSG',        away:'Arsenal',    leg:'Aller'  },
-    { id:'a6', pool:'A', home:'Arsenal',    away:'PSG',        leg:'Retour' },
-    { id:'b1', pool:'B', home:'Real Madrid',away:'Bayern',     leg:'Aller'  },
-    { id:'b2', pool:'B', home:'Bayern',     away:'Real Madrid',leg:'Retour' },
-    { id:'b3', pool:'B', home:'Bayern',     away:'Man City',   leg:'Aller'  },
-    { id:'b4', pool:'B', home:'Man City',   away:'Bayern',     leg:'Retour' },
-    { id:'b5', pool:'B', home:'Man City',   away:'Real Madrid',leg:'Aller'  },
-    { id:'b6', pool:'B', home:'Real Madrid',away:'Man City',   leg:'Retour' },
+    { id:'a1', pool:'A', home:'Arsenal',    away:'Barça',       leg:'Aller'  },
+    { id:'a2', pool:'A', home:'Barça',      away:'Arsenal',     leg:'Retour' },
+    { id:'a3', pool:'A', home:'Barça',      away:'PSG',         leg:'Aller'  },
+    { id:'a4', pool:'A', home:'PSG',        away:'Barça',       leg:'Retour' },
+    { id:'a5', pool:'A', home:'PSG',        away:'Arsenal',     leg:'Aller'  },
+    { id:'a6', pool:'A', home:'Arsenal',    away:'PSG',         leg:'Retour' },
+    { id:'b1', pool:'B', home:'Real Madrid',away:'Bayern',      leg:'Aller'  },
+    { id:'b2', pool:'B', home:'Bayern',     away:'Real Madrid', leg:'Retour' },
+    { id:'b3', pool:'B', home:'Bayern',     away:'Man City',    leg:'Aller'  },
+    { id:'b4', pool:'B', home:'Man City',   away:'Bayern',      leg:'Retour' },
+    { id:'b5', pool:'B', home:'Man City',   away:'Real Madrid', leg:'Aller'  },
+    { id:'b6', pool:'B', home:'Real Madrid',away:'Man City',    leg:'Retour' }
   ];
 
   let scores = {};
-  // Charge depuis localStorage en premier
-const _saved = localStorage.getItem('tr_scores');
-try { if (_saved) scores = JSON.parse(_saved); } catch(e) { localStorage.removeItem('tr_scores'); }
 
   async function loadScores() {
     try {
-              const data = await sb('/rest/v1/matches?select=id,home_score,away_score,status');
-      data.forEach(m => { scores[m.id] = { home: m.home_score ?? '', away: m.away_score ?? '', status: m.status || 'pending' }; });
-              localStorage.setItem('tr_scores', JSON.stringify(scores));
-    } catch(e) { console.warn('Supabase offline, mode local'); renderMatches(); }
+      const data = await sb('/rest/v1/matches?select=id,home_score,away_score,status&order=order_index');
+      data.forEach(m => {
+        scores[m.id] = {
+          home: m.home_score ?? '',
+          away: m.away_score ?? '',
+          status: m.status || 'pending'
+        };
+      });
+    } catch(e) {
+      console.warn('Supabase offline, mode local');
+    }
     renderMatches();
-    renderStandings();
   }
 
   function renderMatches() {
@@ -344,22 +359,25 @@ try { if (_saved) scores = JSON.parse(_saved); } catch(e) { localStorage.removeI
       const wrap = document.getElementById('matches-' + pool);
       wrap.innerHTML = '';
       const list = MATCHES.filter(m => m.pool === pool);
-      // Grouper par confrontation (ex: a1+a2, a3+a4, a5+a6)
       for (let i = 0; i < list.length; i += 2) {
         const block = document.createElement('div');
         block.className = 'match-block';
+
         const lbl = document.createElement('div');
         lbl.className = 'match-label';
         lbl.textContent = list[i].home + ' · ' + list[i].away;
         block.appendChild(lbl);
+
         [list[i], list[i+1]].filter(Boolean).forEach(m => {
           block.appendChild(buildMatchRow(m));
         });
+
         if (i < list.length - 2) {
           const div = document.createElement('div');
           div.className = 'divider';
           block.appendChild(div);
         }
+
         wrap.appendChild(block);
       }
     });
@@ -371,28 +389,24 @@ try { if (_saved) scores = JSON.parse(_saved); } catch(e) { localStorage.removeI
     row.className = 'match-row';
     row.dataset.mid = m.id;
 
-    // Teams
     const teams = document.createElement('div');
     teams.className = 'match-teams';
-    teams.innerHTML = m.home + ' <span>vs</span> ' + m.away + ' <span style="font-size:.7rem;color:rgba(255,255,255,.25)">' + m.leg + '</span>';
+    teams.innerHTML = m.home + ' <span>vs</span> ' + m.away +
+      ' <span style="font-size:.7rem;color:rgba(255,255,255,.25)">' + m.leg + '</span>';
 
-    // Score home
     const h = document.createElement('input');
     h.type = 'number'; h.min = 0; h.max = 99;
     h.className = 'score-in'; h.value = sc.home; h.placeholder = '-';
     h.dataset.side = 'home'; h.dataset.mid = m.id;
 
-    // Sep
     const sep = document.createElement('div');
     sep.className = 'sep'; sep.textContent = '–';
 
-    // Score away
     const a = document.createElement('input');
     a.type = 'number'; a.min = 0; a.max = 99;
     a.className = 'score-in'; a.value = sc.away; a.placeholder = '-';
     a.dataset.side = 'away'; a.dataset.mid = m.id;
 
-    // Status select
     const sel = document.createElement('select');
     sel.className = 'status-select ' + (sc.status || 'pending');
     sel.dataset.mid = m.id;
@@ -406,47 +420,66 @@ try { if (_saved) scores = JSON.parse(_saved); } catch(e) { localStorage.removeI
       sel.className = 'status-select ' + sel.value;
     });
 
-    // Save btn
     const btn = document.createElement('button');
     btn.className = 'btn-save'; btn.textContent = 'Sauvegarder';
     btn.addEventListener('click', async () => {
-      const hv = h.value === '' ? null : parseInt(h.value);
-      const av = a.value === '' ? null : parseInt(a.value);
+      const hv = h.value === '' ? null : parseInt(h.value, 10);
+      const av = a.value === '' ? null : parseInt(a.value, 10);
       const st = sel.value;
+
       scores[m.id] = { home: hv ?? '', away: av ?? '', status: st };
-      localStorage.setItem('tr_scores', JSON.stringify(scores));
       btn.textContent = '✓ Sauvé'; btn.classList.add('saved');
-      setTimeout(() => { btn.textContent = 'Sauvegarder'; btn.classList.remove('saved'); }, 2000);
+      setTimeout(() => {
+        btn.textContent = 'Sauvegarder';
+        btn.classList.remove('saved');
+      }, 2000);
+
       try {
-        await sb('/rest/v1/matches?id=eq.' + m.id, 'PATCH', { home_score: hv, away_score: av, status: st });
+        await sb('/rest/v1/matches?id=eq.' + m.id, 'PATCH', {
+          home_score: hv,
+          away_score: av,
+          status: st
+        });
         toast('Score mis à jour ✓');
-        renderStandings();
-      } catch(e) { toast('Local OK — Supabase offline', 'err'); }
+      } catch(e) {
+        toast('Local OK — Supabase offline', 'err');
+      }
     });
 
-    row.appendChild(teams); row.appendChild(h); row.appendChild(sep);
-    row.appendChild(a); row.appendChild(sel); row.appendChild(btn);
+    row.appendChild(teams);
+    row.appendChild(h);
+    row.appendChild(sep);
+    row.appendChild(a);
+    row.appendChild(sel);
+    row.appendChild(btn);
     return row;
   }
 
-  // ── BUTEURS ──
   let scorers = JSON.parse(localStorage.getItem('tr_scorers') || '[]');
 
-  function saveLocal() { localStorage.setItem('tr_scorers', JSON.stringify(scorers)); }
+  function saveLocal() {
+    localStorage.setItem('tr_scorers', JSON.stringify(scorers));
+  }
 
   function renderScorers() {
     const list = document.getElementById('scorers-list');
     const empty = document.getElementById('empty-scorers');
+
     list.querySelectorAll('.scorer-row').forEach(r => r.remove());
-    const sorted = [...scorers].sort((a,b) => b.goals - a.goals);
-    if (sorted.length === 0) { empty.style.display = 'block'; return; }
+
+    const sorted = [...scorers].sort((a, b) => b.goals - a.goals);
+    if (sorted.length === 0) {
+      empty.style.display = 'block';
+      return;
+    }
     empty.style.display = 'none';
+
     sorted.forEach((sc, i) => {
       const idx = scorers.indexOf(sc);
       const row = document.createElement('div');
       row.className = 'scorer-row';
       row.innerHTML = `
-        <div class="scorer-rank">${i+1}</div>
+        <div class="scorer-rank">${i + 1}</div>
         <div class="scorer-info">
           <div class="scorer-name">${sc.name}</div>
           <div class="scorer-team">${sc.team}</div>
@@ -462,169 +495,84 @@ try { if (_saved) scores = JSON.parse(_saved); } catch(e) { localStorage.removeI
     });
 
     list.querySelectorAll('.g-btn').forEach(b => b.addEventListener('click', async () => {
-      const idx = parseInt(b.dataset.idx);
+      const idx = parseInt(b.dataset.idx, 10);
       if (b.dataset.a === 'plus') scorers[idx].goals++;
       else if (scorers[idx].goals > 0) scorers[idx].goals--;
-      saveLocal(); await syncScorer(scorers[idx]); renderScorers();   renderStandings();
+      saveLocal();
+      await syncScorer(scorers[idx]);
+      renderScorers();
     }));
-    list.querySelectorAll('.btn-del').forEach(b => b.addEventListener('click', () => {
-      scorers.splice(parseInt(b.dataset.idx), 1);
-      saveLocal(); renderScorers();   renderStandings();
-      toast('Buteur supprimé', 'err');
+
+    list.querySelectorAll('.btn-del').forEach(b => b.addEventListener('click', async () => {
+      const idx = parseInt(b.dataset.idx, 10);
+      const removed = scorers.splice(idx, 1)[0];
+      saveLocal();
+      if (removed) await deleteScorer(removed);
+      renderScorers();
     }));
   }
 
-  async function syncScorer(sc) {
+  async function syncScorer(scorer) {
     try {
-      const existing = await sb(`/rest/v1/scorers?player_name=eq.${encodeURIComponent(sc.name)}&team=eq.${encodeURIComponent(sc.team)}`);
-      if (existing && existing.length > 0) {
-        await sb(`/rest/v1/scorers?player_name=eq.${encodeURIComponent(sc.name)}&team=eq.${encodeURIComponent(sc.team)}`, 'PATCH', { goals: sc.goals });
-      } else {
-        await sb('/rest/v1/scorers', 'POST', { player_name: sc.name, team: sc.team, goals: sc.goals });
-      }
-    } catch(e) { console.warn('Supabase offline'); }
-  }
-
-  document.getElementById('btn-add').addEventListener('click', async () => {
-    const name = document.getElementById('inp-scorer').value.trim();
-    const team = document.getElementById('inp-team').value;
-    const goals = parseInt(document.getElementById('inp-goals').value) || 1;
-    if (!name || !team) { toast('Remplis le buteur et l\'equipe !', 'err'); return; }
-    const existing = scorers.find(s => s.name.toLowerCase() === name.toLowerCase() && s.team === team);
-    if (existing) { existing.goals += goals; }
-    else { scorers.push({ name, team, goals }); }
-    saveLocal();
-    await syncScorer(existing || scorers[scorers.length - 1]);
-    renderScorers();   renderStandings();
-    document.getElementById('inp-scorer').value = '';
-    document.getElementById('inp-goals').value = '1';
-    toast(`${name} · ${goals} but(s) ✓`);
-  });
-
-  // ── CLASSEMENT & TIRAGE ──
-  const POOL_TEAMS = {
-    A: ['Arsenal','Barça','PSG'],
-    B: ['Real Madrid','Man City','Bayern']
-  };
-
-  function computeStandings() {
-    const st = {};
-    ['Arsenal','Barça','PSG','Real Madrid','Man City','Bayern'].forEach(t => {
-      st[t] = { pj:0, v:0, n:0, d:0, bp:0, bc:0, pts:0 };
-    });
-    MATCHES.forEach(m => {
-      const sc = scores[m.id];
-      if (!sc || sc.home === '' || sc.away === '') return;
-      const h = parseInt(sc.home), a = parseInt(sc.away);
-      if (isNaN(h) || isNaN(a)) return;
-      st[m.home].pj++; st[m.away].pj++;
-      st[m.home].bp += h; st[m.home].bc += a;
-      st[m.away].bp += a; st[m.away].bc += h;
-      if (h > a) { st[m.home].v++; st[m.home].pts += 3; st[m.away].d++; }
-      else if (h < a) { st[m.away].v++; st[m.away].pts += 3; st[m.home].d++; }
-      else { st[m.home].n++; st[m.away].n++; st[m.home].pts++; st[m.away].pts++; }
-    });
-    return st;
-  }
-
-  function sortPool(pool, st) {
-    return [...POOL_TEAMS[pool]].sort((a,b) => {
-      if ((st[b]?.pts||0) !== (st[a]?.pts||0)) return (st[b]?.pts||0) - (st[a]?.pts||0);
-      const diffB = (st[b]?.bp||0) - (st[b]?.bc||0);
-      const diffA = (st[a]?.bp||0) - (st[a]?.bc||0);
-      if (diffB !== diffA) return diffB - diffA;
-      return (st[b]?.bp||0) - (st[a]?.bp||0);
-    });
-  }
-
-  function renderStandings() {
-    const st = computeStandings();
-    ['A','B'].forEach(pool => {
-      const sorted = sortPool(pool, st);
-      const wrap = document.getElementById('standing-' + pool);
-      if (!wrap) return;
-      wrap.innerHTML = '';
-      sorted.forEach((team, i) => {
-        const qualified = i < 2;
-        const row = document.createElement('div');
-        row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;margin-bottom:6px;background:' + (qualified ? 'rgba(113,240,168,.08)' : 'rgba(255,255,255,.03)') + ';border:1px solid ' + (qualified ? 'rgba(113,240,168,.25)' : 'rgba(255,255,255,.07)') + ';';
-        row.innerHTML = '<span style="font-family:\'Oswald\',sans-serif;font-size:1rem;min-width:20px;color:' + (qualified?'#71f0a8':'rgba(255,255,255,.4)') + '">' + (i+1) + '</span><span style="flex:1;font-weight:700;font-size:14px">' + team + '</span><span style="font-size:12px;color:rgba(255,255,255,.5)">' + (st[team]?.pj||0) + 'J</span><span style="font-family:\'Oswald\',sans-serif;font-size:1.2rem;color:' + (qualified?'#71f0a8':'#f5f7ff') + '">' + (st[team]?.pts||0) + ' pts</span>' + (qualified ? '<span style="font-size:10px;background:rgba(113,240,168,.15);border:1px solid rgba(113,240,168,.3);color:#71f0a8;padding:2px 8px;border-radius:999px;font-weight:800">✓ QUALIFIÉ</span>' : '');
-        wrap.appendChild(row);
+      await sb('/rest/v1/scorers', 'POST', {
+        name: scorer.name,
+        team: scorer.team,
+        goals: scorer.goals
       });
-    });
-    const allDone = MATCHES.every(m => scores[m.id]?.status === 'done');
-    const drawBtn = document.getElementById('btn-draw');
-    const badge = document.getElementById('f4-badge');
-    if (drawBtn) drawBtn.disabled = !allDone;
-    if (badge) {
-      if (allDone) {
-        badge.textContent = '4 qualifiés prêts';
-        badge.style.background = 'rgba(113,240,168,.15)';
-        badge.style.borderColor = 'rgba(113,240,168,.35)';
-        badge.style.color = '#71f0a8';
-      } else {
-        const done = MATCHES.filter(m => scores[m.id]?.status === 'done').length;
-        badge.textContent = done + '/' + MATCHES.length + ' matchs terminés';
-      }
+    } catch (e) {
+      console.error('Erreur syncScorer', e);
     }
   }
 
-  let drawDone = JSON.parse(localStorage.getItem('tr_draw') || 'null');
-
-  function applyDraw(result) {
-    document.getElementById('s1t1').textContent = result[0];
-    document.getElementById('s1t2').textContent = result[1];
-    document.getElementById('s2t1').textContent = result[2];
-    document.getElementById('s2t2').textContent = result[3];
-    document.getElementById('bracket-wrap').style.display = 'block';
-    document.getElementById('btn-reset-draw').style.display = 'inline-flex';
-    document.getElementById('btn-draw').disabled = true;
-    document.getElementById('draw-msg').textContent = '✓ DF1: ' + result[0] + ' vs ' + result[1] + ' | DF2: ' + result[2] + ' vs ' + result[3];
-    document.getElementById('draw-msg').style.color = '#71f0a8';
-    sb('/rest/v1/draw_result?id=eq.1','PATCH',{sf1_t1:result[0],sf1_t2:result[1],sf2_t1:result[2],sf2_t2:result[3],drawn_at:new Date().toISOString()})
-      .catch(() => sb('/rest/v1/draw_result','POST',{id:1,sf1_t1:result[0],sf1_t2:result[1],sf2_t1:result[2],sf2_t2:result[3],drawn_at:new Date().toISOString()}).catch(()=>{}));
+  async function deleteScorer(scorer) {
+    try {
+      await sb(
+        '/rest/v1/scorers?name=eq.' + encodeURIComponent(scorer.name) +
+        '&team=eq.' + encodeURIComponent(scorer.team),
+        'DELETE'
+      );
+    } catch (e) {
+      console.error('Erreur deleteScorer', e);
+    }
   }
 
-  document.getElementById('btn-draw').addEventListener('click', () => {
-    const st = computeStandings();
-    const q1 = sortPool('A', st).slice(0,2);
-    const q2 = sortPool('B', st).slice(0,2);
-    const result = [q1[0], q2[1], q2[0], q1[1]];
-    drawDone = result;
-    localStorage.setItem('tr_draw', JSON.stringify(result));
-    const btn = document.getElementById('btn-draw');
-    btn.textContent = '⏳ Tirage...';
-    btn.disabled = true;
-    let frame = 0;
-    const teams = [...q1, ...q2];
-    const iv = setInterval(() => {
-      frame++;
-      const shuffle = [...teams].sort(() => Math.random() - 0.5);
-      document.getElementById('s1t1').textContent = shuffle[0];
-      document.getElementById('s1t2').textContent = shuffle[1];
-      document.getElementById('s2t1').textContent = shuffle[2];
-      document.getElementById('s2t2').textContent = shuffle[3];
-      document.getElementById('bracket-wrap').style.display = 'block';
-      if (frame >= 18) { clearInterval(iv); applyDraw(result); btn.textContent = '✓ Tirage effectué'; toast('Tirage lancé !'); }
-    }, 80);
+  async function loadScorersFromSupabase() {
+    try {
+      const data = await sb('/rest/v1/scorers?select=name,team,goals&order=goals.desc');
+      scorers = data.map(d => ({ name: d.name, team: d.team, goals: d.goals }));
+      saveLocal();
+      renderScorers();
+    } catch (e) {
+      console.warn('Impossible de charger les buteurs depuis Supabase', e);
+      renderScorers();
+    }
+  }
+
+  document.getElementById('btn-add').addEventListener('click', () => {
+    const match = document.getElementById('inp-match').value;
+    const team = document.getElementById('inp-team').value;
+    const name = document.getElementById('inp-scorer').value.trim();
+    const goals = parseInt(document.getElementById('inp-goals').value, 10) || 1;
+
+    if (!match || !team || !name) {
+      toast('Merci de remplir match, équipe et buteur', 'err');
+      return;
+    }
+
+    const existing = scorers.find(s =>
+      s.name.toLowerCase() === name.toLowerCase() && s.team === team
+    );
+    if (existing) existing.goals += goals;
+    else scorers.push({ name, team, goals });
+
+    saveLocal();
+    renderScorers();
+    syncScorer(existing || { name, team, goals }).catch(console.error);
+    toast('Buteur ajouté ✓');
   });
 
-  document.getElementById('btn-reset-draw').addEventListener('click', () => {
-    drawDone = null;
-    localStorage.removeItem('tr_draw');
-    ['s1t1','s1t2','s2t1','s2t2'].forEach(id => document.getElementById(id).textContent = '?');
-    document.getElementById('bracket-wrap').style.display = 'none';
-    document.getElementById('btn-reset-draw').style.display = 'none';
-    document.getElementById('btn-draw').textContent = '🎲 Lancer le tirage au sort';
-    document.getElementById('btn-draw').disabled = false;
-    document.getElementById('draw-msg').textContent = '';
-  });
-
-  if (drawDone) setTimeout(() => applyDraw(drawDone), 300);
-  renderMatches();   renderScorers();   loadScores();
-  renderScorers();
-  renderStandings();
-  script>
+  loadScores();
+  loadScorersFromSupabase();
+</script>
 </body>
 </html>
-        
