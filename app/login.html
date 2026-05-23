@@ -3,198 +3,161 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin · Tournoi Romainville</title>
+  <title>Connexion · Tournoi Romainville</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, #3a35d4 0%, #05071e 45%, #000 100%);
+      color: #f5f7ff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(5,7,34,1) 30%, rgba(16,20,92,1) 65%, rgba(58,53,212,1) 100%);
-      background-attachment: fixed;
-      color: #f5f7ff;
+      padding: 24px;
     }
-    .login-wrap {
-      width: min(440px, 94vw);
-      background: linear-gradient(180deg, rgba(255,255,255,.09) 0%, rgba(255,255,255,.03) 100%);
-      border: 1px solid rgba(255,255,255,.16);
-      border-radius: 28px;
-      padding: 48px 40px 44px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.45);
-      backdrop-filter: blur(12px);
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(5,7,30,.92);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 20px 60px rgba(0,0,0,.7);
+      padding: 26px 24px 22px;
     }
-    .login-logo {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 32px;
+    .brand {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+      font-size: 13px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase;
     }
-    .login-logo-mark {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,.22);
-      display: grid;
-      place-items: center;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.22), rgba(255,255,255,.03));
-    }
-    .login-logo-mark svg { width: 24px; height: 24px; }
-    .login-logo-text {
-      font-family: 'Inter', sans-serif;
-      text-transform: uppercase;
-      letter-spacing: .18em;
-      font-size: 12px;
-      font-weight: 800;
-      color: rgba(255,255,255,.75);
-      line-height: 1.4;
-    }
-    .login-logo-text span { display: block; font-size: 10px; letter-spacing: .12em; color: rgba(255,255,255,.45); margin-top: 2px; }
+    .brand-dot { width: 10px; height: 10px; border-radius: 50%; background: #7f5cff; box-shadow: 0 0 10px #7f5cff; }
     h1 {
       font-family: 'Oswald', sans-serif;
-      font-size: clamp(2rem, 6vw, 3rem);
+      font-size: 1.8rem;
       text-transform: uppercase;
-      letter-spacing: .02em;
-      line-height: .95;
-      margin-bottom: 10px;
+      letter-spacing: .08em;
+      margin-bottom: 6px;
     }
-    .subtitle {
+    p.sub {
+      font-size: 13px;
       color: rgba(255,255,255,.55);
-      font-size: 14px;
-      line-height: 1.7;
-      margin-bottom: 36px;
+      margin-bottom: 22px;
     }
-    .field { margin-bottom: 20px; }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
     .field label {
-      display: block;
       font-size: 11px;
       font-weight: 800;
-      letter-spacing: .18em;
+      letter-spacing: .16em;
       text-transform: uppercase;
-      color: rgba(255,255,255,.55);
-      margin-bottom: 8px;
+      color: rgba(255,255,255,.45);
     }
     .field input {
-      width: 100%;
-      padding: 14px 18px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-      color: #f5f7ff;
-      font-size: 15px;
-      font-family: inherit;
-      outline: none;
+      width: 100%; padding: 12px 14px;
+      border-radius: 12px; border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06); color: #f5f7ff;
+      font-size: 14px; font-family: inherit; outline: none;
       transition: border-color .2s, background .2s;
     }
     .field input:focus {
-      border-color: rgba(173,153,255,.75);
+      border-color: rgba(173,153,255,.7);
       background: rgba(255,255,255,.1);
     }
-    .error-msg {
-      display: none;
-      color: #ff7c98;
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 16px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      background: rgba(255,124,152,.08);
-      border: 1px solid rgba(255,124,152,.25);
-    }
-    .error-msg.show { display: block; }
-    .btn-submit {
+    .btn-main {
       width: 100%;
-      min-height: 52px;
+      margin-top: 8px;
       border-radius: 14px;
-      border: 1px solid rgba(173,153,255,.6);
-      background: rgba(127,92,255,.3);
+      border: 1px solid rgba(127,92,255,.7);
+      background: linear-gradient(135deg, #7f5cff, #e652ff);
+      color: #fff;
       font-family: 'Oswald', sans-serif;
-      font-size: 1.15rem;
-      letter-spacing: .14em;
+      font-size: 1rem;
+      letter-spacing: .18em;
       text-transform: uppercase;
-      color: white;
+      padding: 12px 16px;
       cursor: pointer;
-      transition: background .2s, transform .2s, box-shadow .2s;
-      box-shadow: 0 0 30px rgba(127,92,255,.2);
+      transition: transform .15s, box-shadow .15s, filter .15s;
     }
-    .btn-submit:hover {
-      background: rgba(127,92,255,.5);
-      transform: translateY(-2px);
-      box-shadow: 0 0 45px rgba(127,92,255,.4);
+    .btn-main:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.6);
+      filter: brightness(1.03);
     }
-    .btn-submit:active { transform: translateY(0); }
-    .back-link {
-      display: block;
-      text-align: center;
-      margin-top: 22px;
-      font-size: 13px;
-      color: rgba(255,255,255,.4);
+    .info {
+      margin-top: 14px;
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .info a {
+      color: #b8a4ff;
       text-decoration: none;
-      transition: color .2s;
-      letter-spacing: .06em;
+      font-weight: 600;
+      font-size: 12px;
     }
-    .back-link:hover { color: rgba(255,255,255,.75); }
+    .err {
+      font-size: 12px;
+      color: #ff7c98;
+      min-height: 16px;
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
-  <div class="login-wrap">
-    <div class="login-logo">
-      <div class="login-logo-mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20"/>
-        </svg>
-      </div>
-      <div class="login-logo-text">
-        Tournoi Romainville
-        <span>European Night Edition</span>
-      </div>
+  <div class="card">
+    <div class="brand">
+      <div class="brand-dot"></div>
+      Tournoi Romainville
     </div>
-
-    <h1>Espace<br>Admin</h1>
-    <p class="subtitle">Saisir le mot de passe organisateur pour accéder au back-office.</p>
+    <h1>Accès admin</h1>
+    <p class="sub">Connecte-toi pour gérer les scores, statuts et buteurs du tournoi.</p>
 
     <div class="field">
-      <label for="pwd">Mot de passe</label>
-      <input type="password" id="pwd" placeholder="••••••••" autocomplete="current-password" autofocus />
+      <label for="inp-pass">Mot de passe</label>
+      <input type="password" id="inp-pass" placeholder="••••••••" />
     </div>
+    <button class="btn-main" id="btn-login">Se connecter</button>
+    <div class="err" id="err"></div>
 
-    <div class="error-msg" id="err">Mot de passe incorrect. Réessaie.</div>
-
-    <button class="btn-submit" id="btn-login">Accéder</button>
-
-    <a href="index.html" class="back-link">← Retour au tournoi</a>
+    <div class="info">
+      <span>Tu n'es pas arbitre&nbsp;? Pas de souci.</span>
+      <a href="index-1.html">← Retour au site public</a>
+    </div>
   </div>
 
   <script>
-    const ADMIN_PWD = 'tournoi2026';
-    const btn = document.getElementById('btn-login');
-    const inp = document.getElementById('pwd');
-    const err = document.getElementById('err');
+    const ADMIN_PASS = 'romainville2024'; // change ce mot de passe
 
-    function tryLogin() {
-      if (inp.value === ADMIN_PWD) {
-        sessionStorage.setItem('tr_admin', '1');
-        window.location.href = 'admin.html';
-      } else {
-        err.classList.add('show');
-        inp.value = '';
-        inp.focus();
-        setTimeout(() => err.classList.remove('show'), 3500);
+    document.getElementById('btn-login').addEventListener('click', () => {
+      const pass = document.getElementById('inp-pass').value.trim();
+      const err = document.getElementById('err');
+
+      if (pass === '') {
+        err.textContent = 'Merci de saisir le mot de passe.';
+        return;
       }
-    }
+      if (pass !== ADMIN_PASS) {
+        err.textContent = 'Mot de passe incorrect.';
+        return;
+      }
 
-    btn.addEventListener('click', tryLogin);
-    inp.addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
-
-    // Si déjà connecté, aller direct sur admin
-    if (sessionStorage.getItem('tr_admin') === '1') {
+      sessionStorage.setItem('tr_admin', '1');
       window.location.href = 'admin.html';
-    }
+    });
+
+    document.getElementById('inp-pass').addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        document.getElementById('btn-login').click();
+      }
+    });
   </script>
 </body>
 </html>
