@@ -1427,10 +1427,8 @@
     document.getElementById('login-btn').addEventListener('click', () => {
       const pwd = document.getElementById('admin-pwd').value;
       if (pwd === ADMIN_PWD) {
-        document.getElementById('admin-overlay').style.display = 'none';
-        document.getElementById('admin-content').style.display = 'block';
-        document.body.classList.add('admin-active');
-        // Scroll vers la section Final 4 si le tirage n'est pas encore fait
+        sessionStorage.setItem('tr_admin','1');
+        window.location.href='admin.html'; // Scroll vers la section Final 4 si le tirage n'est pas encore fait
         if (!drawDone) {
           document.getElementById('final4').scrollIntoView({ behavior: 'smooth' });
         }
