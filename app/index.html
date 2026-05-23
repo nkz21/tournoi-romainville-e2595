@@ -1408,12 +1408,11 @@
       { name: 'Bayern',  img: 'https://upload.wikimedia.org/wikipedia/commons/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg', pool: 'B' }
     ];
 
-    // Qualifiés simulés (à brancher sur les vraies données plus tard)
-    // 1er A, 2e A, 1er B, 2e B
-    let qualified = [TEAMS[0], TEAMS[1], TEAMS[3], TEAMS[4]];
+    // ── STANDINGS COMPUTATION ──     const MATCHES_DATA = [       { id:'a1', pool:'A', home:'Arsenal',    away:'Barça',      },       { id:'a2', pool:'A', home:'Barça',      away:'Arsenal',    },       { id:'a3', pool:'A', home:'Barça',      away:'PSG',        },       { id:'a4', pool:'A', home:'PSG',        away:'Barça',      },       { id:'a5', pool:'A', home:'PSG',        away:'Arsenal',    },       { id:'a6', pool:'A', home:'Arsenal',    away:'PSG',        },       { id:'b1', pool:'B', home:'Real',       away:'Bayern',     },       { id:'b2', pool:'B', home:'Bayern',     away:'Real',       },       { id:'b3', pool:'B', home:'Bayern',     away:'City',       },       { id:'b4', pool:'B', home:'City',       away:'Bayern',     },       { id:'b5', pool:'B', home:'City',       away:'Real',       },       { id:'b6', pool:'B', home:'Real',       away:'City',       },     ];     const POOL_TEAMS_IDX = { A: ['Arsenal','Barça','PSG'], B: ['Real','City','Bayern'] };     let matchScores = {};     function computeStandingsPublic() {       const st = {};       ['Arsenal','Barça','PSG','Real','City','Bayern'].forEach(t => {         st[t] = { pj:0, v:0, n:0, d:0, bp:0, bc:0, pts:0 };       });       MATCHES_DATA.forEach(m => {         const sc = matchScores[m.id];         if (!sc || sc.home === '' || sc.away === '') return;         const h = parseInt(sc.home), a = parseInt(sc.away);         st[m.home].pj++; st[m.away].pj++;         st[m.home].bp += h; st[m.home].bc += a;         st[m.away].bp += a; st[m.away].bc += h;         if (h > a) { st[m.home].v++; st[m.home].pts += 3; st[m.away].d++; }         else if (h < a) { st[m.away].v++; st[m.away].pts += 3; st[m.home].d++; }         else { st[m.home].n++; st[m.away].n++; st[m.home].pts++; st[m.away].pts++; }       });       return st;     }     function sortPoolPublic(pool, st) {       return [...POOL_TEAMS_IDX[pool]].sort((a,b) => {         if ((st[b]?.pts||0) !== (st[a]?.pts||0)) return (st[b]?.pts||0) - (st[a]?.pts||0);         const diffB = (st[b]?.bp||0)-(st[b]?.bc||0), diffA = (st[a]?.bp||0)-(st[a]?.bc||0);         if (diffB !== diffA) return diffB - diffA;         return (st[b]?.bp||0) - (st[a]?.bp||0);       });     }     // Qualifiés dynamiques (calculés depuis Supabase)
+    let qualified = [];
 
     let drawDone = false;
-    let drawInterval = null;
+    
 
     function shuffle(arr) {
       const a = [...arr];
@@ -1513,6 +1512,54 @@
       btn.classList.remove('spinning');
       document.getElementById('reset-btn').style.display = 'none';
     });
+    // ── CHARGEMENT LIVE DEPUIS SUPABASE ──
+        const SB_URL2 = 'https://afqmjyxgkwipiagejxsw.supabase.co';
+        const SB_KEY2 = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmcW1qeXhna3dpcGlhZ2VqeHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MjE5MzcsImV4cCI6MjA5NTA5NzkzN30.FNQ1P1DnSANFOE7oW9AkvhNrZq1N6unWZV8Phn3z9vg';
+        async function sbGet(path) {
+                const r = await fetch(SB_URL2 + path, { headers: { 'apikey': SB_KEY2, 'Authorization': 'Bearer ' + SB_KEY2 } });
+                if (!r.ok) throw new Error(await r.text());
+                return r.json();
+              }
+        async function loadData() {
+                try {
+                          const mData = await sbGet('/rest/v1/matches?select=id,home_score,away_score,status&order=order_index');
+                          mData.forEach(m => { matchScores[m.id] = { home: m.home_score ?? '', away: m.away_score ?? '' }; });
+                          const st = computeStandingsPublic();
+                          qualified = [
+                                      ...sortPoolPublic('A', st).slice(0,2).map(n => TEAMS.find(t => t.name===n || t.name.startsWith(n.slice(0,4)))||null),
+                                      ...sortPoolPublic('B', st).slice(0,2).map(n => TEAMS.find(t => t.name===n || t.name.startsWith(n.slice(0,4)))||null)
+                                    ].filter(Boolean);
+                          if (qualified.length < 4) qualified = [TEAMS[0], TEAMS[1], TEAMS[3], TEAMS[4]];
+                          // Tirage déjà effectué ?
+                          try {
+                                      const dr = await sbGet('/rest/v1/draw_result?id=eq.1&select=sf1_t1,sf1_t2,sf2_t1,sf2_t2');
+                                      if (dr && dr.length > 0 && dr[0].sf1_t1 && !drawDone) {
+                                                    const d = dr[0], fn = n => TEAMS.find(t => t.name===n)||{name:n,img:''};
+                                                    ['sf1-slot1','sf1-slot2','sf2-slot1','sf2-slot2'].forEach((id,i) => renderSlot(id, fn([d.sf1_t1,d.sf1_t2,d.sf2_t1,d.sf2_t2][i])));
+                                                    const dst = document.getElementById('draw-status');
+                                                    dst.className = 'draw-status done';
+                                                    dst.textContent = `✓ Tirage effectué · SF1: ${d.sf1_t1} vs ${d.sf1_t2} · SF2: ${d.sf2_t1} vs ${d.sf2_t2}`;
+                                                    document.getElementById('draw-btn').disabled = true;
+                                                    document.getElementById('reset-btn').style.display = 'inline-block';
+                                                    drawDone = true;
+                                                  }
+                                    } catch(e2) { console.warn('Draw fetch failed', e2); }
+                          // Buteurs
+                          try {
+                                      const sc = await sbGet('/rest/v1/scorers?order=goals.desc&limit=10');
+                                      const el = document.querySelector('.top-scorers-list');
+                                      if (el && sc.length > 0) {
+                                                    el.innerHTML = '';
+                                                    sc.forEach((s, i) => {
+                                                                    const row = document.createElement('div'); row.className = 'scorer-item';
+                                                                    row.innerHTML = `<span class="scorer-rank">${i+1}</span><span class="scorer-name">${s.player_name}</span><span class="scorer-team">${s.team}</span><span class="scorer-goals">${s.goals} but${s.goals>1?'s':''}</span>`;
+                                                                    el.appendChild(row);
+                                                                  });
+                                                  }
+                                    } catch(e3) { console.warn('Scorers fetch failed', e3); }
+                        } catch(e) { console.warn('Supabase offline', e); }
+              }
+        loadData();
   </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
