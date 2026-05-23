@@ -958,7 +958,7 @@
   async function loadAll() {
     try {
       // 1. Matchs
-      const mData = await sbGet('/rest/v1/matches?select=*&order=order_index');
+      const mData = await sbGet('/rest/v1/matches?select=*');
       allMatches = mData;
 
       renderMatches('A');
