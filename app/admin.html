@@ -621,7 +621,7 @@ try { if (_saved) scores = JSON.parse(_saved); } catch(e) { localStorage.removeI
   });
 
   if (drawDone) setTimeout(() => applyDraw(drawDone), 300);
-  loadScores();
+  renderMatches();   renderScorers();   loadScores();
   renderScorers();
   renderStandings();
   script>
