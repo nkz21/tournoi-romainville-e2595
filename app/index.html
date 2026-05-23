@@ -715,7 +715,7 @@
 
     #admin-panel.visible { display: block; }
 
-    .admin-login-overlay {
+    .admin-panel {
       position: fixed;
       inset: 0;
       z-index: 100;
@@ -1377,19 +1377,19 @@
     </main>
 
     <footer class="footer">
-      Tournoi Romainville · European Night Edition   <button id="admin-access-btn" onclick="document.getElementById('admin-login-overlay').style.display='flex'" title="Admin">&#9881;</button>
+      Tournoi Romainville · European Night Edition   <button id="admin-access-btn" onclick="document.getElementById('admin-panel').style.display='flex'" title="Admin">&#9881;</button>
     </footer>
   </div>
 
   <!-- ════════════════════ ADMIN CACHÉ — accessible via #admin-secret ════════════════════ -->
-  <div id="admin-panel">
-    <div class="admin-login-overlay" id="admin-overlay">
+  <div id="admin-panel" style="display:none">
+    <div class="admin-panel" id="admin-overlay">
       <div class="admin-login-box">
         <h2>Admin</h2>
         <p>Accès réservé à l'organisateur. Saisir le mot de passe pour continuer.</p>
         <div class="form-field">
           <label for="admin-pwd">Mot de passe</label>
-          <input type="password" id="admin-pwd" placeholder="••••••••" autocomplete="current-password">
+          <input type="password" id="admin-pwd" placeholder="••••••••" autocomplete="new-password">
         </div>
         <div class="login-error" id="login-error">Mot de passe incorrect</div>
         <button class="btn-login" id="login-btn">Accéder</button>
@@ -1643,5 +1643,5 @@ const initialData = {
 window.TOURNOI_CONFIG = { SUPABASE_URL, SUPABASE_ANON_KEY, ADMIN_EMAIL, EVENT_START, initialData };
 </script>
 
-<!-- ===== ADMIN LOGIN OVERLAY ===== --> <div id="admin-login-overlay">   <div id="admin-login-box" style="position:relative">     <button id="close-login-btn" onclick="document.getElementById('admin-login-overlay').style.display='none'">&times;</button>     <h2>&#128274; Accès Admin</h2>     <p>Saisir le mot de passe pour continuer</p>     <input type="password" id="admin-pwd" placeholder="••••••••" autocomplete="current-password">     <button id="login-btn">Accéder</button>     <div id="login-error">Mot de passe incorrect</div>   </div> </div>  <!-- ===== PANEL ADMIN ===== --> <div id="admin-panel">   <div id="admin-header">     <h3>&#9881; Panel Admin</h3>     <button id="admin-close-btn" onclick="adminLogout()">&#x2715;</button>   </div>   <div id="admin-body">     <!-- MATCHS POULE A -->     <div class="admin-section">       <div class="admin-section-title">Poule A — Scores</div>       <div id="admin-matches-a">Chargement...</div>     </div>     <!-- MATCHS POULE B -->     <div class="admin-section">       <div class="admin-section-title">Poule B — Scores</div>       <div id="admin-matches-b">Chargement...</div>     </div>     <!-- TIRAGE AU SORT -->     <div class="admin-section">       <div class="admin-section-title">Phase Finale</div>       <div class="admin-draw-section">         <h4>&#127922; Tirage au sort Final 4</h4>         <p>Lance le tirage une fois les phases de groupe terminées</p>         <button id="admin-draw-btn" onclick="adminLaunchDraw()">&#127922; Lancer le tirage au sort</button>       </div>     </div>   </div> </div>  <!-- TOAST NOTIFICATION --> <div class="admin-toast" id="admin-toast"></div>  </body>
+<!-- ===== ADMIN LOGIN OVERLAY ===== --> <div id="admin-panel">   <div id="admin-login-box" style="position:relative">     <button id="close-login-btn" onclick="document.getElementById('admin-panel').style.display='none'">&times;</button>     <h2>&#128274; Accès Admin</h2>     <p>Saisir le mot de passe pour continuer</p>     <input type="password" id="admin-pwd" placeholder="••••••••" autocomplete="new-password">     <button id="login-btn">Accéder</button>     <div id="login-error">Mot de passe incorrect</div>   </div> </div>  <!-- ===== PANEL ADMIN ===== --> <div id="admin-panel" style="display:none">   <div id="admin-header">     <h3>&#9881; Panel Admin</h3>     <button id="admin-close-btn" onclick="adminLogout()">&#x2715;</button>   </div>   <div id="admin-body">     <!-- MATCHS POULE A -->     <div class="admin-section">       <div class="admin-section-title">Poule A — Scores</div>       <div id="admin-matches-a">Chargement...</div>     </div>     <!-- MATCHS POULE B -->     <div class="admin-section">       <div class="admin-section-title">Poule B — Scores</div>       <div id="admin-matches-b">Chargement...</div>     </div>     <!-- TIRAGE AU SORT -->     <div class="admin-section">       <div class="admin-section-title">Phase Finale</div>       <div class="admin-draw-section">         <h4>&#127922; Tirage au sort Final 4</h4>         <p>Lance le tirage une fois les phases de groupe terminées</p>         <button id="admin-draw-btn" onclick="adminLaunchDraw()">&#127922; Lancer le tirage au sort</button>       </div>     </div>   </div> </div>  <!-- TOAST NOTIFICATION --> <div class="admin-toast" id="admin-toast"></div>  </body>
 </html>
