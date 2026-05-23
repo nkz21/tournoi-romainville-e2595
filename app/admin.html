@@ -501,9 +501,130 @@ try { if (_saved) scores = JSON.parse(_saved); } catch(e) { localStorage.removeI
     toast(`${name} · ${goals} but(s) ✓`);
   });
 
-  // ── CLASSEMENT & TIRAGE ──   const POOL_TEAMS = {     A: ['Arsenal','Barça','PSG'],     B: ['Real Madrid','Man City','Bayern']   };    function computeStandings() {     const st = {};     ['Arsenal','Barça','PSG','Real Madrid','Man City','Bayern'].forEach(t => {       st[t] = { pj:0, v:0, n:0, d:0, bp:0, bc:0, pts:0 };     });     MATCHES.forEach(m => {       const sc = scores[m.id];       if (!sc || sc.home === '' || sc.away === '') return;       const h = parseInt(sc.home), a = parseInt(sc.away);       st[m.home].pj++; st[m.away].pj++;       st[m.home].bp += h; st[m.home].bc += a;       st[m.away].bp += a; st[m.away].bc += h;       if (h > a) { st[m.home].v++; st[m.home].pts += 3; st[m.away].d++; }       else if (h < a) { st[m.away].v++; st[m.away].pts += 3; st[m.home].d++; }       else { st[m.home].n++; st[m.away].n++; st[m.home].pts++; st[m.away].pts++; }     });     return st;   }    function sortPool(pool, st) {     return [...POOL_TEAMS[pool]].sort((a,b) => {       if (b.pts !== a.pts) return (st[b]?.pts||0) - (st[a]?.pts||0);       const diffB = (st[b]?.bp||0) - (st[b]?.bc||0);       const diffA = (st[a]?.bp||0) - (st[a]?.bc||0);       if (diffB !== diffA) return diffB - diffA;       return (st[b]?.bp||0) - (st[a]?.bp||0);     });   }    function renderStandings() {     const st = computeStandings();     ['A','B'].forEach(pool => {       const sorted = sortPool(pool, st);       const wrap = document.getElementById('standing-' + pool);       wrap.innerHTML = '';       sorted.forEach((team, i) => {         const qualified = i < 2;         const row = document.createElement('div');         row.style.cssText = `display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;margin-bottom:6px;background:${qualified ? 'rgba(113,240,168,.08)' : 'rgba(255,255,255,.03)'};border:1px solid ${qualified ? 'rgba(113,240,168,.25)' : 'rgba(255,255,255,.07)'};`;         row.innerHTML = `           <span style="font-family:'Oswald',sans-serif;font-size:1rem;min-width:20px;color:${qualified?'#71f0a8':'rgba(255,255,255,.4)'}">${i+1}</span>           <span style="flex:1;font-weight:700;font-size:14px">${team}</span>           <span style="font-size:12px;color:rgba(255,255,255,.5)">${st[team]?.pj||0}J</span>           <span style="font-family:'Oswald',sans-serif;font-size:1.2rem;color:${qualified?'#71f0a8':'#f5f7ff'}">${st[team]?.pts||0} pts</span>           ${qualified ? '<span style="font-size:10px;background:rgba(113,240,168,.15);border:1px solid rgba(113,240,168,.3);color:#71f0a8;padding:2px 8px;border-radius:999px;font-weight:800;letter-spacing:.1em">✓ QUALIFÉ</span>' : ''}         `;         wrap.appendChild(row);       });     });     // Activer le bouton si tous les matchs sont terminés     const allDone = MATCHES.every(m => scores[m.id]?.status === 'done');     const drawBtn = document.getElementById('btn-draw');     const badge = document.getElementById('f4-badge');     if (allDone) {       drawBtn.disabled = false;       badge.textContent = '4 qualifiés prêts';       badge.style.background = 'rgba(113,240,168,.15)';       badge.style.borderColor = 'rgba(113,240,168,.35)';       badge.style.color = '#71f0a8';     } else {       const done = MATCHES.filter(m => scores[m.id]?.status === 'done').length;       badge.textContent = `${done}/${MATCHES.length} matchs terminés`;     }   }    let drawDone = JSON.parse(localStorage.getItem('tr_draw') || 'null');    function applyDraw(result) {     document.getElementById('s1t1').textContent = result[0];     document.getElementById('s1t2').textContent = result[1];     document.getElementById('s2t1').textContent = result[2];     document.getElementById('s2t2').textContent = result[3];     document.getElementById('bracket-wrap').style.display = 'block';     document.getElementById('btn-reset-draw').style.display = 'inline-flex';     document.getElementById('btn-draw').disabled = true;     document.getElementById('draw-msg').textContent = `✓ Tirage effectué — DF1: ${result[0]} vs ${result[1]} | DF2: ${result[2]} vs ${result[3]}`;     document.getElementById('draw-msg').style.color = '#71f0a8';     // Sync vers Supabase     sb('/rest/v1/draw_result?id=eq.1', 'PATCH', { sf1_t1: result[0], sf1_t2: result[1], sf2_t1: result[2], sf2_t2: result[3], drawn_at: new Date().toISOString() })       .catch(() => sb('/rest/v1/draw_result', 'POST', { id:1, sf1_t1: result[0], sf1_t2: result[1], sf2_t1: result[2], sf2_t2: result[3], drawn_at: new Date().toISOString() })       .catch(e => console.warn('Draw sync failed', e)));   }    document.getElementById('btn-draw').addEventListener('click', () => {     const st = computeStandings();     const q1 = sortPool('A', st).slice(0, 2); // [1erA, 2eA]     const q2 = sortPool('B', st).slice(0, 2); // [1erB, 2eB]     // Tirage : 1erA vs 2eB et 1erB vs 2eA     const result = [q1[0], q2[1], q2[0], q1[1]];     drawDone = result;     localStorage.setItem('tr_draw', JSON.stringify(result));     const btn = document.getElementById('btn-draw');     btn.textContent = '⏳ Tirage en cours...';     btn.disabled = true;     let frame = 0;     const teams = [...q1, ...q2];     const iv = setInterval(() => {       frame++;       const shuffle = [...teams].sort(() => Math.random() - 0.5);       document.getElementById('s1t1').textContent = shuffle[0];       document.getElementById('s1t2').textContent = shuffle[1];       document.getElementById('s2t1').textContent = shuffle[2];       document.getElementById('s2t2').textContent = shuffle[3];       document.getElementById('bracket-wrap').style.display = 'block';       if (frame >= 18) {         clearInterval(iv);         applyDraw(result);         btn.textContent = '✓ Tirage effectué';         toast('Tirage lancé et sauvegardé !');       }     }, 80);   });    document.getElementById('btn-reset-draw').addEventListener('click', () => {     drawDone = null;     localStorage.removeItem('tr_draw');     ['s1t1','s1t2','s2t1','s2t2'].forEach(id => document.getElementById(id).textContent = '?');     document.getElementById('bracket-wrap').style.display = 'none';     document.getElementById('btn-reset-draw').style.display = 'none';     document.getElementById('btn-draw').textContent = '🎲 Lancer le tirage au sort';     document.getElementById('btn-draw').disabled = false;     document.getElementById('draw-msg').textContent = '';     document.getElementById('f4-badge').textContent = '4 qualifiés prêts';   });    if (drawDone) { setTimeout(() => applyDraw(drawDone), 300); }    loadScores();
-  renderScorers();   renderStandings();
-</script>
+  // ── CLASSEMENT & TIRAGE ──
+  const POOL_TEAMS = {
+    A: ['Arsenal','Barça','PSG'],
+    B: ['Real Madrid','Man City','Bayern']
+  };
+
+  function computeStandings() {
+    const st = {};
+    ['Arsenal','Barça','PSG','Real Madrid','Man City','Bayern'].forEach(t => {
+      st[t] = { pj:0, v:0, n:0, d:0, bp:0, bc:0, pts:0 };
+    });
+    MATCHES.forEach(m => {
+      const sc = scores[m.id];
+      if (!sc || sc.home === '' || sc.away === '') return;
+      const h = parseInt(sc.home), a = parseInt(sc.away);
+      if (isNaN(h) || isNaN(a)) return;
+      st[m.home].pj++; st[m.away].pj++;
+      st[m.home].bp += h; st[m.home].bc += a;
+      st[m.away].bp += a; st[m.away].bc += h;
+      if (h > a) { st[m.home].v++; st[m.home].pts += 3; st[m.away].d++; }
+      else if (h < a) { st[m.away].v++; st[m.away].pts += 3; st[m.home].d++; }
+      else { st[m.home].n++; st[m.away].n++; st[m.home].pts++; st[m.away].pts++; }
+    });
+    return st;
+  }
+
+  function sortPool(pool, st) {
+    return [...POOL_TEAMS[pool]].sort((a,b) => {
+      if ((st[b]?.pts||0) !== (st[a]?.pts||0)) return (st[b]?.pts||0) - (st[a]?.pts||0);
+      const diffB = (st[b]?.bp||0) - (st[b]?.bc||0);
+      const diffA = (st[a]?.bp||0) - (st[a]?.bc||0);
+      if (diffB !== diffA) return diffB - diffA;
+      return (st[b]?.bp||0) - (st[a]?.bp||0);
+    });
+  }
+
+  function renderStandings() {
+    const st = computeStandings();
+    ['A','B'].forEach(pool => {
+      const sorted = sortPool(pool, st);
+      const wrap = document.getElementById('standing-' + pool);
+      if (!wrap) return;
+      wrap.innerHTML = '';
+      sorted.forEach((team, i) => {
+        const qualified = i < 2;
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;margin-bottom:6px;background:' + (qualified ? 'rgba(113,240,168,.08)' : 'rgba(255,255,255,.03)') + ';border:1px solid ' + (qualified ? 'rgba(113,240,168,.25)' : 'rgba(255,255,255,.07)') + ';';
+        row.innerHTML = '<span style="font-family:\'Oswald\',sans-serif;font-size:1rem;min-width:20px;color:' + (qualified?'#71f0a8':'rgba(255,255,255,.4)') + '">' + (i+1) + '</span><span style="flex:1;font-weight:700;font-size:14px">' + team + '</span><span style="font-size:12px;color:rgba(255,255,255,.5)">' + (st[team]?.pj||0) + 'J</span><span style="font-family:\'Oswald\',sans-serif;font-size:1.2rem;color:' + (qualified?'#71f0a8':'#f5f7ff') + '">' + (st[team]?.pts||0) + ' pts</span>' + (qualified ? '<span style="font-size:10px;background:rgba(113,240,168,.15);border:1px solid rgba(113,240,168,.3);color:#71f0a8;padding:2px 8px;border-radius:999px;font-weight:800">✓ QUALIFIÉ</span>' : '');
+        wrap.appendChild(row);
+      });
+    });
+    const allDone = MATCHES.every(m => scores[m.id]?.status === 'done');
+    const drawBtn = document.getElementById('btn-draw');
+    const badge = document.getElementById('f4-badge');
+    if (drawBtn) drawBtn.disabled = !allDone;
+    if (badge) {
+      if (allDone) {
+        badge.textContent = '4 qualifiés prêts';
+        badge.style.background = 'rgba(113,240,168,.15)';
+        badge.style.borderColor = 'rgba(113,240,168,.35)';
+        badge.style.color = '#71f0a8';
+      } else {
+        const done = MATCHES.filter(m => scores[m.id]?.status === 'done').length;
+        badge.textContent = done + '/' + MATCHES.length + ' matchs terminés';
+      }
+    }
+  }
+
+  let drawDone = JSON.parse(localStorage.getItem('tr_draw') || 'null');
+
+  function applyDraw(result) {
+    document.getElementById('s1t1').textContent = result[0];
+    document.getElementById('s1t2').textContent = result[1];
+    document.getElementById('s2t1').textContent = result[2];
+    document.getElementById('s2t2').textContent = result[3];
+    document.getElementById('bracket-wrap').style.display = 'block';
+    document.getElementById('btn-reset-draw').style.display = 'inline-flex';
+    document.getElementById('btn-draw').disabled = true;
+    document.getElementById('draw-msg').textContent = '✓ DF1: ' + result[0] + ' vs ' + result[1] + ' | DF2: ' + result[2] + ' vs ' + result[3];
+    document.getElementById('draw-msg').style.color = '#71f0a8';
+    sb('/rest/v1/draw_result?id=eq.1','PATCH',{sf1_t1:result[0],sf1_t2:result[1],sf2_t1:result[2],sf2_t2:result[3],drawn_at:new Date().toISOString()})
+      .catch(() => sb('/rest/v1/draw_result','POST',{id:1,sf1_t1:result[0],sf1_t2:result[1],sf2_t1:result[2],sf2_t2:result[3],drawn_at:new Date().toISOString()}).catch(()=>{}));
+  }
+
+  document.getElementById('btn-draw').addEventListener('click', () => {
+    const st = computeStandings();
+    const q1 = sortPool('A', st).slice(0,2);
+    const q2 = sortPool('B', st).slice(0,2);
+    const result = [q1[0], q2[1], q2[0], q1[1]];
+    drawDone = result;
+    localStorage.setItem('tr_draw', JSON.stringify(result));
+    const btn = document.getElementById('btn-draw');
+    btn.textContent = '⏳ Tirage...';
+    btn.disabled = true;
+    let frame = 0;
+    const teams = [...q1, ...q2];
+    const iv = setInterval(() => {
+      frame++;
+      const shuffle = [...teams].sort(() => Math.random() - 0.5);
+      document.getElementById('s1t1').textContent = shuffle[0];
+      document.getElementById('s1t2').textContent = shuffle[1];
+      document.getElementById('s2t1').textContent = shuffle[2];
+      document.getElementById('s2t2').textContent = shuffle[3];
+      document.getElementById('bracket-wrap').style.display = 'block';
+      if (frame >= 18) { clearInterval(iv); applyDraw(result); btn.textContent = '✓ Tirage effectué'; toast('Tirage lancé !'); }
+    }, 80);
+  });
+
+  document.getElementById('btn-reset-draw').addEventListener('click', () => {
+    drawDone = null;
+    localStorage.removeItem('tr_draw');
+    ['s1t1','s1t2','s2t1','s2t2'].forEach(id => document.getElementById(id).textContent = '?');
+    document.getElementById('bracket-wrap').style.display = 'none';
+    document.getElementById('btn-reset-draw').style.display = 'none';
+    document.getElementById('btn-draw').textContent = '🎲 Lancer le tirage au sort';
+    document.getElementById('btn-draw').disabled = false;
+    document.getElementById('draw-msg').textContent = '';
+  });
+
+  if (drawDone) setTimeout(() => applyDraw(drawDone), 300);
+  loadScores();
+  renderScorers();
+  renderStandings();
+  script>
 </body>
 </html>
         
