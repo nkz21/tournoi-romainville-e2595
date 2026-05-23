@@ -325,6 +325,9 @@
   ];
 
   let scores = {};
+  // Charge depuis localStorage en premier
+const _saved = localStorage.getItem('tr_scores');
+if (_saved) scores = JSON.parse(_saved);
 
   async function loadScores() {
     try {
@@ -410,6 +413,7 @@
       const av = a.value === '' ? null : parseInt(a.value);
       const st = sel.value;
       scores[m.id] = { home: hv ?? '', away: av ?? '', status: st };
+      localStorage.setItem('tr_scores', JSON.stringify(scores));
       btn.textContent = '✓ Sauvé'; btn.classList.add('saved');
       setTimeout(() => { btn.textContent = 'Sauvegarder'; btn.classList.remove('saved'); }, 2000);
       try {
